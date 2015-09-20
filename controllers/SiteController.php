@@ -131,12 +131,12 @@ class SiteController extends Controller
         }
 
 
-        /*echo 'nameCol: '.$nameCol."<br />";
+        echo 'nameCol: '.$nameCol."<br />";
         echo 'addressCol: '.$addressCol."<br />";
-        echo 'cityCol: '.$cityCol."<br />";*/
+        echo 'cityCol: '.$cityCol."<br /><br />";
 
 
-        $db=Yii::$app->db;
+        /*$db=Yii::$app->db;
         for ($i = 1; $i<= $highestRow; ++$i) {
             if($parsedData['name'][$i]){
                 $db->createCommand()->insert('university', [
@@ -145,7 +145,7 @@ class SiteController extends Controller
                     'city' => $parsedData['city'][$i],
                 ])->execute();
             }
-        }
+        }*/
     }
 
     public function actionExcel(){
