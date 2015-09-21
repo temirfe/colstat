@@ -3,11 +3,16 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m150910_093756_create_university_table extends Migration
+class m150920_104911_create_university_import_table extends Migration
 {
     public function up()
     {
-        $this->createTable('university', [
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+        }
+
+        $this->createTable('university_import', [
             'id' => $this->primaryKey(),
             'graduate' => $this->integer('1')->notNull()->defaultValue(0),
             'name' => $this->string()->notNull(),
@@ -27,12 +32,13 @@ class m150910_093756_create_university_table extends Migration
             'grad_rate_women' =>$this->string('20')->notNull(),
             'apply_fee' =>$this->string('20')->notNull(),
             'about' => $this->text(),
-        ]);
+        ], $tableOptions);
+        $this->createIndex('idx_university_import_name', 'university_import', 'name');
     }
 
-    public function down()
+        public function down()
     {
-        $this->dropTable('university');
+        $this->dropTable('university_import');
     }
 
     /*

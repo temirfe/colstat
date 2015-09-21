@@ -82,6 +82,7 @@ class SiteController extends Controller
     }
 
     public function actionExceldb(){
+        //echo 'asdf'; Yii::$app->end();
         $file='uploads/Undergrad.xlsx';
         //$objPHPExcel = new \PHPExcel();
 
@@ -99,9 +100,10 @@ class SiteController extends Controller
 
         $headRow=false;
         $parsedData=array();
-        $name='Institution Name'; $parsedData['name']=array(); $nameCol=false; //CI = ColumnIndex
-        $address='Address'; $parsedData['address']=array(); $addressCol=false;
-        $city='City'; $parsedData['city']=array(); $cityCol=false;
+
+        $name=['Institution Name']; $parsedData['name']=array(); $nameCol=false; //CI = ColumnIndex
+        $address=['Address']; $parsedData['address']=array(); $addressCol=false;
+        $city=['City']; $parsedData['city']=array(); $cityCol=false;
         //parse each row
         for ($row = 1; $row <= $highestRow; ++$row) {
             if(!$headRow) //set index variables
@@ -110,9 +112,9 @@ class SiteController extends Controller
                 for ($col = 0; $col <= $highestColumnIndex; ++$col) {
                     if ($curval = $objWorksheet->getCellByColumnAndRow($col, $row)->getValue()) //if current cell has text
                     {
-                        if(!$nameCol && $curval==$name) { $nameCol=$col; $headRow=$row;}
-                        elseif(!$addressCol && $curval==$address) { $addressCol=$col;}
-                        elseif(!$cityCol && $curval==$city) { $cityCol=$col;}
+                        if(!$nameCol && in_array($curval,$name)) { $nameCol=$col; $headRow=$row;}
+                        elseif(!$addressCol && in_array($curval,$address)) { $addressCol=$col;}
+                        elseif(!$cityCol && in_array($curval,$city)) { $cityCol=$col;}
                     }
                 }
             }
@@ -136,7 +138,7 @@ class SiteController extends Controller
         echo 'cityCol: '.$cityCol."<br /><br />";
 
 
-        /*$db=Yii::$app->db;
+        $db=Yii::$app->db;
         for ($i = 1; $i<= $highestRow; ++$i) {
             if($parsedData['name'][$i]){
                 $db->createCommand()->insert('university', [
@@ -145,7 +147,136 @@ class SiteController extends Controller
                     'city' => $parsedData['city'][$i],
                 ])->execute();
             }
+        }
+    }
+
+    public function actionExceltwo(){
+        //echo 'asdf'; Yii::$app->end();
+        $file='uploads/Undergrad.xlsx';
+        //$objPHPExcel = new \PHPExcel();
+
+        //$file=mb_convert_encoding($file, 'Windows-1251', 'UTF-8');
+        $inputFileType = \PHPExcel_IOFactory::identify($file);
+        $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+        $objPHPExcel=$objReader->load($file);
+
+        $objWorksheet = $objPHPExcel->getActiveSheet();
+
+        $highestRow = $objWorksheet->getHighestRow(); // e.g. 10
+        $highestColumn = $objWorksheet->getHighestColumn(); // e.g 'F'
+        //$columnIndex=\PHPExcel_Cell::stringFromColumnIndex($highestColumn);
+        $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn); // e.g. 5
+
+        $headRow=false;
+        $parsedData=array();
+
+        $keyray=array();
+        $colindex=array();
+        $headerNames=array();
+        $colnameTableRows=Yii::$app->db->createCommand("SELECT * FROM colname")->queryAll();
+
+        foreach($colnameTableRows as $ctrow){
+            foreach($ctrow as $key=>$val){
+                if($val) $keyray[$key][]=$val;
+                $parsedData[$key]=array();
+                if($key!='id' && $key!='about')$headerNames[]=$key; //$headerNames=['name','city','address','..'];
+            }
+        }
+        //parse each row
+        for ($row = 1; $row <= $highestRow; ++$row) {
+            if(!$headRow) //set index variables
+            {
+                //parse each column
+                for ($col = 0; $col <= $highestColumnIndex; ++$col) {
+                    if ($curval = trim($objWorksheet->getCellByColumnAndRow($col, $row)->getValue())) //if current cell has text
+                    {
+                        foreach($keyray as $colname=>$colvals){
+                            if(in_array($curval,$colvals)) {$colindex[$col]=$colname; break;}
+                        }
+                    }
+                }
+                $headRow=true;
+            }
+            else //header has been set, now insert data
+            {
+                //parse each column
+                for ($col = 0; $col <= $highestColumnIndex; ++$col) {
+                    if ($curval = $objWorksheet->getCellByColumnAndRow($col, $row)->getValue()) //if current cell has text
+                    {
+                        $parsedData[$colindex[$col]][$row]=$curval; //$parsedData['name']['1']='Adelaide'; or $parsedData = ['name'=>['Adelaide']]
+                    }
+                }
+            }
+        }
+
+        //$batchRow=array(); //uncomment if u remove actionSyncuni
+        $insRow=array();//from actionSyncUni
+        $db=Yii::$app->db;
+        for ($i = 0; $i<= $highestRow; $i++) {
+            if($parsedData['name'][$i]){
+                foreach($headerNames as $hname){
+                    //$batchRow[$i][]=$parsedData[$hname][$i]; //uncomment if u remove actionSyncuni
+                    $insRow[$hname]=$parsedData[$hname][$i]; //from actionSyncUni
+                }
+
+                /* --BEGIN can be a stand alone function in actionSyncuni --*/
+                $params = [':name' => $insRow['name'], ':state' => $insRow['state']];
+                $targetrow=$db->createCommand("SELECT id FROM university WHERE name=:name AND state=:state", $params)->queryOne();
+                if($targetrow) //update fields except name
+                {
+                    unset($insRow['name']);
+                    $upd=array_filter($insRow);
+                    $db->createCommand()->update('university', $upd, "id='{$targetrow['id']}'")->execute();
+                }
+                else //insert
+                {
+                    $ins=array_filter($insRow);
+                    $db->createCommand()->insert('university',$ins)->execute();
+                }
+                /* --END can be a stand alone function in actionSyncuni --*/
+            }
+        }
+        //$db->createCommand()->batchInsert('university_import', $headerNames, $batchRow)->execute(); //uncomment if u remove actionSyncuni
+    }
+
+
+    public function actionSyncuni(){
+        $db=Yii::$app->db;
+        $sourcerows=$db->createCommand("SELECT * FROM university_import")->queryAll();
+        foreach($sourcerows as $srow){
+            $name=trim($srow['name']);
+            $params = [':name' => $name, ':state' => $srow['state']];
+            $targetrow=$db->createCommand("SELECT id FROM university WHERE name=:name AND state=:state", $params)->bindValue(':name', $name)->queryOne();
+            if($targetrow) //update fields except name
+            {
+                unset($srow['id'],$srow['name']);
+                $upd=array_filter($srow);
+                $db->createCommand()->update('university', $upd, "id='{$targetrow['id']}'")->execute();
+            }
+            else //insert
+            {
+                unset($srow['id']);
+                $ins=array_filter($srow);
+                $db->createCommand()->insert('university',$ins)->execute();
+            }
+        }
+    }
+
+
+    public function actionRun(){
+        $db=Yii::$app->db;
+        $colnames=$db->createCommand("SELECT * FROM university_import")->queryAll();
+        foreach($colnames as $row){
+            $params = [':name' => $row['name'], ':state' => $row['state'], ':id' => $row['id']];
+            $check=$db->createCommand("SELECT id FROM university_import WHERE name=:name AND state=:state AND id<>:id", $params)->queryOne();
+            if($check) echo $row['id']." = ".$check['id'].'<br />';
+        }
+
+        /*foreach($keyray as $colname=>$colvals){
+            if(in_array('Institution Name',$colvals)) {echo "<b>".$colname."</b><br />"; break;}
+            else echo $colname."<br />";
         }*/
+
     }
 
     public function actionExcel(){
