@@ -30,6 +30,10 @@ class m150920_043948_create_colname_table extends Migration
             'grad_rate_women' => $this->string()->notNull(),
             'apply_fee' => $this->string()->notNull(),
             'about' => $this->string()->notNull(),
+<<<<<<< HEAD
+=======
+
+>>>>>>> ea1edb76a1dca6f21162571a5cbf99b52446168a
             'pct_adm_ttl' => $this->string()->notNull(),
             'pct_adm_men' => $this->string()->notNull(),
             'pct_adm_wmen' => $this->string()->notNull(),
@@ -69,6 +73,7 @@ class m150920_043948_create_colname_table extends Migration
             'act_wr_75' => $this->string()->notNull(),
             'tuition_in' =>$this->string()->notNull(),
             'tuition_out' =>$this->string()->notNull(),
+<<<<<<< HEAD
 
             'grad_enr' =>$this->string()->notNull(),
             'avg_gmat' =>$this->string()->notNull(),
@@ -76,6 +81,9 @@ class m150920_043948_create_colname_table extends Migration
             'avg_start_sal' =>$this->string()->notNull(),
             'avg_ugrad_gpa' =>$this->string()->notNull(),
             'ft_grad_empl_3month' =>$this->string()->notNull(),
+=======
+        ], $tableOptions);
+>>>>>>> ea1edb76a1dca6f21162571a5cbf99b52446168a
 
             'campus_set' =>$this->string()->notNull(),
             'campus_house' =>$this->string()->notNull(),
