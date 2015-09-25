@@ -59,6 +59,18 @@ $config = [
                 '<_m:[\w\-]+>/<_c:[\w\-]+>/<id:\d+>' => '<_m>/<_c>/view',
             ),
         ],
+        'assetManager' => [
+            'bundles' => [
+                [
+                    'yii\web\JqueryAsset' => [
+                        'js' => [
+                            YII_ENV_DEV ? 'jquery.js' : 'jquery.min.js'
+                        ]
+                    ],
+                ],
+                'appendTimestamp' => true,
+            ],
+        ],
     ],
     'params' => $params,
 ];
