@@ -185,7 +185,7 @@ AppAsset::register($this);
         <div class="container">
             <p class="pull-left">&copy; <?= date('Y') ?> COLLEGE STATISTICS </p>
 
-            <p class="pull-right"><?= Yii::powered() ?></p>
+            <p class="pull-right"><?=Html::a('upload', '/site/upload');?></p>
         </div>
     </footer>
 
