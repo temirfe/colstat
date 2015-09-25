@@ -69,21 +69,32 @@ class SiteController extends Controller
     {
 
         if(isset($_POST['upform'])){
-            echo $_POST['upform']['field1'];
-            $file=UploadedFile::getInstanceByName('upform[xfile]');
-            if($file->extension !='xls' && $file->extension !='xlsx')
-                return "Error: only Excel files should be uploaded!".$file->extension;
-            $file->saveAs('uploads/' . $file->baseName . '.' . $file->extension);
-        }
+            if($cat=$_POST['upform']['field1'])
+            {
 
-        else
+                if($file=UploadedFile::getInstanceByName('upform[xfile]'))
+                {
+                    if($file->extension !='xls' && $file->extension !='xlsx')
+                        return "Error: only Excel files should be uploaded!".$file->extension;
+                    $fileName=time().'.'.$file->extension;
+                    $saveFile='uploads/'.$fileName;
+                    $file->saveAs($saveFile);
+
+                    $this->Excelparse($saveFile,$cat);
+                    Yii::$app->getSession()->setFlash('success', 'File has been parsed.');
+                    return $this->goHome();
+                }
+                else return "No file selected!";
+            }
+            else return "Please select category";
+        }
 
         return $this->render('upload');
     }
 
-    public function actionExceldb(){
+    public function actionExcelOne($file){
         //echo 'asdf'; Yii::$app->end();
-        $file='uploads/Undergrad.xlsx';
+
         //$objPHPExcel = new \PHPExcel();
 
         //$file=mb_convert_encoding($file, 'Windows-1251', 'UTF-8');
@@ -150,9 +161,8 @@ class SiteController extends Controller
         }
     }
 
-    public function actionExceltwo(){
+    public function Excelparse($file, $table){
         //echo 'asdf'; Yii::$app->end();
-        $file='uploads/Undergrad.xlsx';
         //$objPHPExcel = new \PHPExcel();
 
         //$file=mb_convert_encoding($file, 'Windows-1251', 'UTF-8');
@@ -203,6 +213,7 @@ class SiteController extends Controller
                 for ($col = 0; $col <= $highestColumnIndex; ++$col) {
                     if ($curval = $objWorksheet->getCellByColumnAndRow($col, $row)->getValue()) //if current cell has text
                     {
+                        if($curval[0] == "=") $curval = $objWorksheet->getCellByColumnAndRow($col, $row)->getFormattedValue(); //if it's a formula in a cell
                         $parsedData[$colindex[$col]][$row]=$curval; //$parsedData['name']['1']='Adelaide'; or $parsedData = ['name'=>['Adelaide']]
                     }
                 }
@@ -221,17 +232,17 @@ class SiteController extends Controller
 
                 /* --BEGIN can be a stand alone function in actionSyncuni --*/
                 $params = [':name' => $insRow['name'], ':state' => $insRow['state']];
-                $targetrow=$db->createCommand("SELECT id FROM university WHERE name=:name AND state=:state", $params)->queryOne();
+                $targetrow=$db->createCommand("SELECT id FROM {$table} WHERE name=:name AND state=:state", $params)->queryOne();
                 if($targetrow) //update fields except name
                 {
                     unset($insRow['name']);
-                    $upd=array_filter($insRow);
-                    $db->createCommand()->update('university', $upd, "id='{$targetrow['id']}'")->execute();
+                    $upd=array_filter($insRow);//filters out arrays that has empty value
+                    $db->createCommand()->update($table, $upd, "id='{$targetrow['id']}'")->execute();
                 }
                 else //insert
                 {
                     $ins=array_filter($insRow);
-                    $db->createCommand()->insert('university',$ins)->execute();
+                    $db->createCommand()->insert($table,$ins)->execute();
                 }
                 /* --END can be a stand alone function in actionSyncuni --*/
             }
@@ -250,7 +261,7 @@ class SiteController extends Controller
             if($targetrow) //update fields except name
             {
                 unset($srow['id'],$srow['name']);
-                $upd=array_filter($srow);
+                $upd=array_filter($srow); //filters out arrays that has empty value
                 $db->createCommand()->update('university', $upd, "id='{$targetrow['id']}'")->execute();
             }
             else //insert
