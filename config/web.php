@@ -60,16 +60,7 @@ $config = [
             ),
         ],
         'assetManager' => [
-            'bundles' => [
-                [
-                    'yii\web\JqueryAsset' => [
-                        'js' => [
-                            YII_ENV_DEV ? 'jquery.js' : 'jquery.min.js'
-                        ]
-                    ],
-                ],
                 'appendTimestamp' => true,
-            ],
         ],
     ],
     'params' => $params,
