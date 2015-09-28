@@ -88,6 +88,7 @@ class SiteController extends Controller
                     $file->saveAs($saveFile);
 
                     $this->Excelparse($saveFile,$cat);
+                    @unlink($saveFile);
                     Yii::$app->getSession()->setFlash('success', 'File has been parsed.');
                     return $this->goHome();
                 }
@@ -177,7 +178,8 @@ class SiteController extends Controller
         $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
         $objPHPExcel=$objReader->load($file);
 
-        $objWorksheet = $objPHPExcel->getActiveSheet();
+        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        //$objWorksheet = $objPHPExcel->getActiveSheet();
 
         $highestRow = $objWorksheet->getHighestRow(); // e.g. 10
         $highestColumn = $objWorksheet->getHighestColumn(); // e.g 'F'
@@ -190,7 +192,10 @@ class SiteController extends Controller
         $keyray=array();
         $colindex=array();
         $headerNames=array();
-        $colnameTableRows=Yii::$app->db->createCommand("SELECT * FROM colname")->queryAll();
+        if($table=='dental') $colname='dental_colname';
+        elseif($table=='pharmacy') $colname='pharmacy_colname';
+        else $colname='colname';
+        $colnameTableRows=Yii::$app->db->createCommand("SELECT * FROM {$colname}")->queryAll();
 
         foreach($colnameTableRows as $ctrow){
             foreach($ctrow as $key=>$val){
@@ -219,9 +224,8 @@ class SiteController extends Controller
             {
                 //parse each column
                 for ($col = 0; $col <= $highestColumnIndex; ++$col) {
-                    if ($curval = $objWorksheet->getCellByColumnAndRow($col, $row)->getValue()) //if current cell has text
+                    if ($curval = $objWorksheet->getCellByColumnAndRow($col, $row)->getFormattedValue()) //if current cell has text
                     {
-                        if($curval[0] == "=") $curval = $objWorksheet->getCellByColumnAndRow($col, $row)->getFormattedValue(); //if it's a formula in a cell
                         $parsedData[$colindex[$col]][$row]=$curval; //$parsedData['name']['1']='Adelaide'; or $parsedData = ['name'=>['Adelaide']]
                     }
                 }
