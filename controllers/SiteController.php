@@ -205,6 +205,7 @@ class SiteController extends Controller
             {
                 //parse each column
                 for ($col = 0; $col <= $highestColumnIndex; ++$col) {
+                    $colindex[$col]='';
                     if ($curval = trim($objWorksheet->getCellByColumnAndRow($col, $row)->getValue())) //if current cell has text
                     {
                         foreach($keyray as $colname=>$colvals){
@@ -231,26 +232,30 @@ class SiteController extends Controller
         $insRow=array();//from actionSyncUni
         $db=Yii::$app->db;
         for ($i = 0; $i<= $highestRow; $i++) {
-            if($parsedData['name'][$i]){
+            if(isset($parsedData['name'][$i])&&$parsedData['name'][$i]){
                 foreach($headerNames as $hname){
                     //$batchRow[$i][]=$parsedData[$hname][$i]; //uncomment if u remove actionSyncuni
-                    $insRow[$hname]=$parsedData[$hname][$i]; //from actionSyncUni
+                    if(isset($parsedData[$hname][$i])) $insRow[$hname]=$parsedData[$hname][$i]; //from actionSyncUni
                 }
 
                 /* --BEGIN can be a stand alone function in actionSyncuni --*/
-                $params = [':name' => $insRow['name'], ':state' => $insRow['state']];
-                $targetrow=$db->createCommand("SELECT id FROM {$table} WHERE name=:name AND state=:state", $params)->queryOne();
-                if($targetrow) //update fields except name
+                if(isset($insRow['state']))
                 {
-                    unset($insRow['name']);
-                    $upd=array_filter($insRow);//filters out arrays that has empty value
-                    $db->createCommand()->update($table, $upd, "id='{$targetrow['id']}'")->execute();
+                    $params = [':name' => $insRow['name'], ':state' => $insRow['state']];
+                    $targetrow=$db->createCommand("SELECT id FROM {$table} WHERE name=:name AND state=:state", $params)->queryOne();
+                    if($targetrow) //update fields except name
+                    {
+                        unset($insRow['name']);
+                        $upd=array_filter($insRow);//filters out arrays that has empty value
+                        $db->createCommand()->update($table, $upd, "id='{$targetrow['id']}'")->execute();
+                    }
+                    else //insert
+                    {
+                        $ins=array_filter($insRow);
+                        $db->createCommand()->insert($table,$ins)->execute();
+                    }
                 }
-                else //insert
-                {
-                    $ins=array_filter($insRow);
-                    $db->createCommand()->insert($table,$ins)->execute();
-                }
+
                 /* --END can be a stand alone function in actionSyncuni --*/
             }
         }
