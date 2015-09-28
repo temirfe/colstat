@@ -194,6 +194,7 @@ class SiteController extends Controller
         $headerNames=array();
         if($table=='dental') $colname='dental_colname';
         elseif($table=='pharmacy') $colname='pharmacy_colname';
+        elseif($table=='optometry') $colname='optometry_colname';
         else $colname='colname';
         $colnameTableRows=Yii::$app->db->createCommand("SELECT * FROM {$colname}")->queryAll();
 
@@ -214,11 +215,14 @@ class SiteController extends Controller
                     if ($curval = trim($objWorksheet->getCellByColumnAndRow($col, $row)->getValue())) //if current cell has text
                     {
                         foreach($keyray as $colname=>$colvals){
-                            if(in_array($curval,$colvals)) {$colindex[$col]=$colname; break;}
+                            if(in_array($curval,$colvals)) {
+                                $colindex[$col]=$colname;
+                                if($colname=='name') $headRow=true;
+                                break;
+                            }
                         }
                     }
                 }
-                $headRow=true;
             }
             else //header has been set, now insert data
             {
@@ -231,7 +235,6 @@ class SiteController extends Controller
                 }
             }
         }
-
         //$batchRow=array(); //uncomment if u remove actionSyncuni
         $insRow=array();//from actionSyncUni
         $db=Yii::$app->db;
