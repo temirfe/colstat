@@ -27,47 +27,26 @@ AppAsset::register($this);
     <?php $this->beginBody() ?>
     <?php
     $yiiuser=Yii::$app->user;
-    if(!$yiiuser->isGuest){
-        $username=$yiiuser->identity->username;
-        $userid=$yiiuser->identity->id;
-    }
-
-//    $isAdmin=$yiiuser->identity->isAdmin;
     ?>
     <div class="wrap">
         <?php
-            if (!empty(Yii::$app->user->identity)) {
-                NavBar::begin([
-                    'brandLabel' => 'Colledge Statistics',
-                    'brandUrl' => Yii::$app->homeUrl,
-                    'options' => [
-                        'class' => 'navbar-inverse navbar-fixed-top',
-                    ],
-                ]);
-                $navItems=[
-                    ['label' => 'Home', 'url' => ['/site/index']],
-                    ['label' => 'About', 'url' => ['/site/about']],
-                    ['label' => 'Contact', 'url' => ['/site/contact']],
-
+            if (!$yiiuser->isGuest) {
+                $username=$yiiuser->identity->username;
+                $userid=$yiiuser->identity->id;
+                $logout=[
+                    'label' => $username,
+                    'options'=>['class'=>'dropdown'],
+                    'url'=>['#'],
+                    'template' => '<a href="{url}" class="dropdown-toggle" data-toggle="dropdown">{label}<b class="caret"></b></a>',
+                    'items' => [
+                        ['label' => 'Profile', 'url' => ['/user/profile?id='.$userid]],
+                        ['label' => 'Logout', 'url' => ['/site/logout'], 'template' => '<a href="{url}" data-method="post">{label}</a>',],
+                    ]
                 ];
-                if ($yiiuser->isGuest) {
-                    array_push($navItems,['label' => 'Sign In', 'url' => ['/site/login']],['label' => 'Sign Up', 'url' => ['/site/signup']]);
-                } else {
-                    array_push($navItems,[
-                            'label' => $username,
-                            'items' => [
-                                ['label' => 'Profile', 'url' => ['/user/profile?id='.$userid]],
-                                ['label' => 'Logout', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
-                            ],
-                        ]
-                    );
-                }
-                echo Nav::widget([
-                    'options' => ['class' => 'navbar-nav navbar-right'],
-                    'items' => $navItems,
-                ]);
-                NavBar::end();
             }
+        else{
+            $logout=['label' => 'Sign In', 'url' => ['/site/login']];
+        }
         ?>
 
         <div class="top_menu_container">
@@ -81,7 +60,10 @@ AppAsset::register($this);
                         ['label' => 'FAQ', 'url' => ['/page/25']],
                         ['label' => 'Terms of Use', 'url' => ['/page/26']],
                         ['label' => 'Contact us', 'url' => ['/page/27']],
+                        $logout
                     ],
+
+                    'submenuTemplate' => "\n<ul class='dropdown-menu' role='menu'>\n{items}\n</ul>\n",
                     'options' => [
                         'class' => 'top_menu',
                     ],
