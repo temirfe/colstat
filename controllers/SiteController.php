@@ -461,6 +461,10 @@ class SiteController extends Controller
     public $fb_client_secret='6ceac7e0efc27d6f28b7e3364ab8c55a';
     public $fb_redirect_uri='http://yii.collegestatistics.org/site/loginfb';
 
+    public $google_client_id='57130310-5sitaflvkdeq61f0gc4b4h1qqcum884k.apps.googleusercontent.com';
+    public $google_client_secret='q2BJg8g8E_PFjbcQCBX6lAh2';
+    public $google_redirect_uri='http://yii.collegestatistics.org/site/logingoogle';
+
     public function actionOauth()
     {
         //echo 'req '.$_SERVER['REQUEST_URI'];
@@ -478,9 +482,104 @@ class SiteController extends Controller
             //if($_GET['to']=='vk') {header('Location: http://oauth.vk.com/authorize?client_id=4195734&response_type=code&redirect_uri=http://desko.kg/auth/'.$action.'vk');}
            // if($_GET['to']=='ok') {header('Location: http://www.odnoklassniki.ru/oauth/authorize?client_id=223808256&response_type=code&redirect_uri=http://desko.kg/auth/'.$action.'ok');}
             //if($_GET['to']=='mailru') {header('Location: https://connect.mail.ru/oauth/authorize?client_id=717376&response_type=code&redirect_uri=http%3A%2F%2Fdesko.kg%2Fauth%2F'.$action.'mailru');}
-            //if($_GET['to']=='gplus') {header('Location: https://accounts.google.com/o/oauth2/auth?client_id=553652608799-ud3uk6foe45h3stkbj2304mc9r61rphc.apps.googleusercontent.com&response_type=code&scope=openid%20email&redirect_uri=http://desko.kg/auth/googleauth&state='.$action.'google');}
+            if($_GET['to']=='google')
+            {
+                header('Location: https://accounts.google.com/o/oauth2/auth?client_id='
+                .$this->google_client_id.'&response_type=code&scope=openid%20email&redirect_uri='.$this->google_redirect_uri.'&state=test');
+            }
        // }
         //else echo 'nope';
+    }
+
+    public function actionLogingoogle(){
+        $app=Yii::$app;
+        if(isset($_GET['error']))
+        {
+            if(isset($app->session['return_url']) && $rurl=$app->session['return_url'])
+            {
+                $this->redirect($rurl);
+            }
+            else
+                $this->redirect('/site/login');
+        }
+        elseif(isset($_GET['code']))
+        {
+            $key=$_GET['state'];
+            $code=$_GET['code'];
+            $url="https://accounts.google.com/o/oauth2/token";
+            if( $curl = curl_init() ) {
+                curl_setopt($curl, CURLOPT_URL, $url);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+                curl_setopt($curl, CURLOPT_POST,true);
+                curl_setopt($curl, CURLOPT_POSTFIELDS,http_build_query(array('code'=>$code,'redirect_uri'=>$this->google_redirect_uri, 'grant_type'=>'authorization_code', 'client_id'=>$this->google_client_id, 'client_secret'=>$this->google_client_secret)));
+                $out = curl_exec($curl);
+                $decode=json_decode($out);
+                $access_token=$decode->access_token;
+                $id_token_hash=$decode->id_token;
+                curl_close($curl);
+            }
+
+            if(isset($access_token))
+            {
+                $url="https://www.googleapis.com/plus/v1/people/me/openIdConnect?scope=openid%20profile&access_token={$access_token}";
+                if( $curl = curl_init() ) {
+                    curl_setopt($curl, CURLOPT_URL, $url);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+                    $out = curl_exec($curl);
+                    $outObj=json_decode($out);
+                    curl_close($curl);
+                }
+                if(isset($outObj))
+                {
+                    $dao=$app->db;
+                    $google_user_id=$outObj->sub;
+                    $user_id=$dao->createCommand("SELECT id FROM user WHERE google_id='{$google_user_id}'")->queryScalar();
+                    if($user_id)
+                    {
+                        $identity=User::findOne($user_id); //parameters are required
+                        $duration=3600*24*30; // 30 days
+                        $app->user->login($identity, $duration);
+                        $sql="UPDATE user SET lastvisit=UNIX_TIMESTAMP() WHERE id='{$user_id}'";
+                        $dao->createCommand($sql)->execute();
+                        $this->goHome();
+
+                    }
+                    else
+                    {
+                        $user_id2=$dao->createCommand("SELECT id FROM user WHERE email='{$outObj->email}'")->queryScalar();
+                        if($user_id2)
+                        {
+                            $identity=User::findOne($user_id2); //parameters are required
+                            $duration=3600*24*30; // 30 days
+                            $app->user->login($identity, $duration);
+                            $sql="UPDATE user SET lastvisit=UNIX_TIMESTAMP(), google_id='{$outObj->sub}' WHERE id='{$user_id2}'";
+                            $dao->createCommand($sql)->execute();
+                            Yii::$app->getSession()->setFlash('success', 'Your Google Plus account has been linked to your local account.');
+                            $this->goHome();
+
+                        }
+                        else{
+                            $dao->createCommand()->insert('user', [
+                                'name' => $outObj->name,
+                                'username' =>$outObj->email,
+                                'password_hash' => 'asdfasdfsdfasdf',
+                                'email' => $outObj->email,
+                                'fb_id' => $outObj->sub,
+                                'status' => 1,
+                                'city' => 'N/A',
+                                'state' => 'N/A',
+                                'created_at' => time(),
+                            ])->execute();
+                            $identity=User::findOne(['username'=>$outObj->email]);
+                            $duration=3600*24*30; // 30 days
+                            $app->user->login($identity, $duration);
+                            Yii::$app->getSession()->setFlash('success', 'You have been registered via Google Plus. Please complete your profile.');
+                            $this->goHome();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public function actionLoginfb()
@@ -495,12 +594,12 @@ class SiteController extends Controller
             else
                 $this->redirect('/site/login');
         }
-        if(isset($app->session['fb_token']) && $app->session['fb_token'])
+        elseif(isset($app->session['fb_token']) && $app->session['fb_token'])
         {
             $fb_token=$app->session['fb_token'];
             $this->fbauth($fb_token);
         }
-        if(isset($_GET['code']))
+        elseif(isset($_GET['code']))
         {
             $code=$_GET['code'];
             $url="https://graph.facebook.com/v2.3/oauth/access_token?client_id={$this->fb_client_id}&redirect_uri={$this->fb_redirect_uri}&client_secret={$this->fb_client_secret}&code={$code}";
@@ -541,7 +640,7 @@ class SiteController extends Controller
                 $user_id=$dao->createCommand("SELECT id FROM user WHERE fb_id='{$fb_user_id}'")->queryScalar();
                 if($user_id)
                 {
-                    $identity=User::find($user_id); //parameters are required
+                    $identity=User::findOne($user_id); //parameters are required
                     $duration=3600*24*30; // 30 days
                     $app->user->login($identity, $duration);
                     $sql="UPDATE user SET lastvisit=UNIX_TIMESTAMP() WHERE id='{$user_id}'";
@@ -563,37 +662,43 @@ class SiteController extends Controller
                     }
 
                     if(isset($graph)){
-                        $user_id=$dao->createCommand("SELECT id FROM user WHERE email='{$graph->email}'")->queryScalar();
-                        if($user_id)
+                        $user_id2=$dao->createCommand("SELECT id FROM user WHERE email='{$graph->email}'")->queryScalar();
+                        if($user_id2)
                         {
-                            $identity=User::find($user_id); //parameters are required
+                            $identity=User::findOne($user_id2); //parameters are required
                             $duration=3600*24*30; // 30 days
                             $app->user->login($identity, $duration);
-                            $sql="UPDATE user SET lastvisit=UNIX_TIMESTAMP(), fb_id='{$graph->id}' WHERE id='{$user_id}'";
+                            $sql="UPDATE user SET lastvisit=UNIX_TIMESTAMP(), fb_id='{$graph->id}' WHERE id='{$user_id2}'";
                             $dao->createCommand($sql)->execute();
+                            Yii::$app->getSession()->setFlash('success', 'Your facebook account has been linked to your local account.');
                             return $this->goHome();
 
                         }
                         else{
-                            $user=new User;
-                            $user->name=$graph->first_name." ".$graph->last_name;
-                            $user->username=" user_".rand();
-                            $user->setPassword($user->username);
-                            $user->email=$graph->email;
-                            $user->fb_id=$graph->id;
-                            $user->status=1;
-                            $user->save();
+                            $dao->createCommand()->insert('user', [
+                                'name' => $graph->first_name." ".$graph->last_name,
+                                'username' =>$graph->email,
+                                'password_hash' => 'asdfasdfsdfasdf',
+                                'email' => $graph->email,
+                                'fb_id' => $graph->id,
+                                'status' => 1,
+                                'city' => 'N/A',
+                                'state' => 'N/A',
+                                'created_at' => time(),
+                            ])->execute();
+                            $identity=User::findOne(['username'=>$graph->email]);
                             $duration=3600*24*30; // 30 days
-                            $app->user->login($user, $duration);
+                            $app->user->login($identity, $duration);
+                            Yii::$app->getSession()->setFlash('success', 'You have been registered via facebook. Please complete your profile.');
                             return $this->goHome();
                         }
                     }
+                    else return "error";
                 }
-
             }
+            else return "error";
         }
-
-
+        else return "error";
     }
 
     public function actionRun2(){
