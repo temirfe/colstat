@@ -14,6 +14,10 @@ class SignupForm extends Model
     public $email;
     public $password;
     public $verifyCode;
+    public $name;
+    public $city;
+    public $state;
+    public $hear;
 
     /**
      * @inheritdoc
@@ -22,10 +26,11 @@ class SignupForm extends Model
     {
         return [
             ['username', 'filter', 'filter' => 'trim'],
-            ['username', 'required'],
+            [['username','name','city','state'], 'required'],
             ['username', 'match', 'pattern' => '#^[\w_-]+$#i'],
             ['username', 'unique', 'targetClass' => User::className(), 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
+            ['hear', 'string', 'max' => 500],
 
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
@@ -50,6 +55,10 @@ class SignupForm extends Model
             $user = new User();
             $user->username = $this->username;
             $user->email = $this->email;
+            $user->name = $this->name;
+            $user->state = $this->state;
+            $user->city = $this->city;
+            $user->hear = $this->hear;
             $user->setPassword($this->password);
             $user->status = User::STATUS_WAIT;
             $user->generateAuthKey();
@@ -67,5 +76,12 @@ class SignupForm extends Model
         }
 
         return null;
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'hear' => 'How did you hear about us? ',
+        ];
     }
 }

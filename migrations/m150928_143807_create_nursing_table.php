@@ -7,7 +7,7 @@ class m150928_143807_create_nursing_table extends Migration
 {
     public function up()
     {
-        $this->createTable('nursing', [
+        /*$this->createTable('nursing', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
             'city' => $this->string()->notNull(),
@@ -24,7 +24,7 @@ class m150928_143807_create_nursing_table extends Migration
         ]);
 
         $this->createIndex('idx_nursing_name', 'nursing', 'name');
-        $this->createIndex('idx_nursing_state', 'nursing', 'state');
+        $this->createIndex('idx_nursing_state', 'nursing', 'state');*/
     }
 
     public function down()

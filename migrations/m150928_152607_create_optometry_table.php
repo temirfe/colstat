@@ -7,7 +7,7 @@ class m150928_152607_create_optometry_table extends Migration
 {
     public function up()
     {
-        $this->createTable('optometry', [
+        /*$this->createTable('optometry', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
             'city' => $this->string()->notNull(),
@@ -30,7 +30,7 @@ class m150928_152607_create_optometry_table extends Migration
         ]);
 
         $this->createIndex('idx_optometry_name', 'optometry', 'name');
-        $this->createIndex('idx_optometry_state', 'optometry', 'state');
+        $this->createIndex('idx_optometry_state', 'optometry', 'state');*/
     }
 
     public function down()

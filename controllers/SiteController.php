@@ -16,6 +16,7 @@ use app\models\ResetPasswordForm;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\UploadedFile;
+use app\models\User;
 
 class SiteController extends Controller
 {
@@ -494,6 +495,11 @@ class SiteController extends Controller
             else
                 $this->redirect('/site/login');
         }
+        if(isset($app->session['fb_token']) && $app->session['fb_token'])
+        {
+            $fb_token=$app->session['fb_token'];
+            $this->fbauth($fb_token);
+        }
         if(isset($_GET['code']))
         {
             $code=$_GET['code'];
@@ -532,16 +538,58 @@ class SiteController extends Controller
             if($outObj->data->app_id==$this->fb_client_id && $outObj->data->is_valid) //token app id is equal to app id, then it is reliable
             {
                 $fb_user_id=$outObj->data->user_id;
-                //graph request
-                $url="https://graph.facebook.com/{$fb_user_id}?fields=picture,first_name,last_name,email&access_token={$fb_token}";
-                if( $curl = curl_init() ) {
-                    curl_setopt($curl, CURLOPT_URL, $url);
-                    curl_setopt($curl, CURLOPT_HEADER, 0);
-                    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
-                    $out = curl_exec($curl);
-                    $graph=json_decode($out);
-                    curl_close($curl);
+                $user_id=$dao->createCommand("SELECT id FROM user WHERE fb_id='{$fb_user_id}'")->queryScalar();
+                if($user_id)
+                {
+                    $identity=User::find($user_id); //parameters are required
+                    $duration=3600*24*30; // 30 days
+                    $app->user->login($identity, $duration);
+                    $sql="UPDATE user SET lastvisit=UNIX_TIMESTAMP() WHERE id='{$user_id}'";
+                    $dao->createCommand($sql)->execute();
+                    return $this->goHome();
+
                 }
+                else
+                {
+                    //graph request
+                    $url="https://graph.facebook.com/{$fb_user_id}?fields=first_name,last_name,email&access_token={$fb_token}";
+                    if( $curl = curl_init() ) {
+                        curl_setopt($curl, CURLOPT_URL, $url);
+                        curl_setopt($curl, CURLOPT_HEADER, 0);
+                        curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+                        $out = curl_exec($curl);
+                        $graph=json_decode($out);
+                        curl_close($curl);
+                    }
+
+                    if(isset($graph)){
+                        $user_id=$dao->createCommand("SELECT id FROM user WHERE email='{$graph->email}'")->queryScalar();
+                        if($user_id)
+                        {
+                            $identity=User::find($user_id); //parameters are required
+                            $duration=3600*24*30; // 30 days
+                            $app->user->login($identity, $duration);
+                            $sql="UPDATE user SET lastvisit=UNIX_TIMESTAMP(), fb_id='{$graph->id}' WHERE id='{$user_id}'";
+                            $dao->createCommand($sql)->execute();
+                            return $this->goHome();
+
+                        }
+                        else{
+                            $user=new User;
+                            $user->name=$graph->first_name." ".$graph->last_name;
+                            $user->username=" user_".rand();
+                            $user->setPassword($user->username);
+                            $user->email=$graph->email;
+                            $user->fb_id=$graph->id;
+                            $user->status=1;
+                            $user->save();
+                            $duration=3600*24*30; // 30 days
+                            $app->user->login($user, $duration);
+                            return $this->goHome();
+                        }
+                    }
+                }
+
             }
         }
 

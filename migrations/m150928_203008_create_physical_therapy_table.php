@@ -7,7 +7,7 @@ class m150928_203008_create_physical_therapy_table extends Migration
 {
     public function up()
     {
-        $this->createTable('physical_therapy', [
+       /* $this->createTable('physical_therapy', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
             'city' => $this->string()->notNull(),
@@ -24,7 +24,7 @@ class m150928_203008_create_physical_therapy_table extends Migration
         ]);
 
         $this->createIndex('idx_physical_therapy_name', 'physical_therapy', 'name');
-        $this->createIndex('idx_physical_therapy_state', 'physical_therapy', 'state');
+        $this->createIndex('idx_physical_therapy_state', 'physical_therapy', 'state');*/
     }
 
     public function down()

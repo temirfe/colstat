@@ -7,7 +7,7 @@ class m150928_153949_create_optometry_colname_table extends Migration
 {
     public function up()
     {
-        $this->createTable('optometry_colname', [
+        /*$this->createTable('optometry_colname', [
             'id' => $this->primaryKey(),
             'name' => $this->string('100')->notNull(),
             'city' => $this->string('100')->notNull(),
@@ -26,7 +26,7 @@ class m150928_153949_create_optometry_colname_table extends Migration
             'in_state_amnt' => $this->string('100')->notNull(),
             'out_state_amnt' => $this->string('100')->notNull(),
             'prereqs' => $this->string('100')->notNull(),
-        ]);
+        ]);*/
     }
 
     public function down()

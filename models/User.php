@@ -69,14 +69,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['username', 'required'],
+            [['username','name','city','state'], 'required'],
             ['username', 'match', 'pattern' => '#^[\w_-]+$#i'],
             ['username', 'unique', 'targetClass' => self::className(), 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
+            ['hear', 'string', 'max' => 500],
 
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => self::className(), 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => self::className(), 'message' => 'User with this email address has already been registered.'],
             ['email', 'string', 'max' => 255],
 
             ['status', 'integer'],
@@ -95,6 +96,7 @@ class User extends ActiveRecord implements IdentityInterface
             'password_hash' => 'Password',
             'created_at' => 'Created',
             'updated_at' => 'Updated',
+            'hear' => 'How did you hear about us? ',
         ];
     }
 

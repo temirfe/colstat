@@ -7,7 +7,7 @@ class m150928_140908_create_occupational_therapy_table extends Migration
 {
     public function up()
     {
-        $this->createTable('occupational_therapy', [
+        /*$this->createTable('occupational_therapy', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
             'city' => $this->string()->notNull(),
@@ -24,7 +24,7 @@ class m150928_140908_create_occupational_therapy_table extends Migration
         ]);
 
         $this->createIndex('idx_occupational_therapy_name', 'occupational_therapy', 'name');
-        $this->createIndex('idx_occupational_therapy_state', 'occupational_therapy', 'state');
+        $this->createIndex('idx_occupational_therapy_state', 'occupational_therapy', 'state');*/
     }
 
     public function down()
