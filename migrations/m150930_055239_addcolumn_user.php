@@ -12,9 +12,9 @@ class m150930_055239_addcolumn_user extends Migration
         $this->addColumn($this->tableName,'city','varchar(100) NOT NULL');
         $this->addColumn($this->tableName,'state','varchar(100) NOT NULL');
         $this->addColumn($this->tableName,'hear','varchar(500) NOT NULL');
-        $this->addColumn($this->tableName,'fb_id','integer(30) NOT NULL');
-        $this->addColumn($this->tableName,'twi_id','integer(30) NOT NULL');
-        $this->addColumn($this->tableName,'google_id','integer(30) NOT NULL');
+        $this->addColumn($this->tableName,'fb_id','varchar(30) NOT NULL');
+        $this->addColumn($this->tableName,'twi_id','varchar(30) NOT NULL');
+        $this->addColumn($this->tableName,'google_id','varchar(30) NOT NULL');
         $this->addColumn($this->tableName,'lastvisit','integer(20) NOT NULL');
     }
 
