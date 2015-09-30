@@ -456,26 +456,103 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionSedirect()
+    public $fb_client_id='1021642147856249';
+    public $fb_client_secret='6ceac7e0efc27d6f28b7e3364ab8c55a';
+    public $fb_redirect_uri='http://yii.collegestatistics.org/site/loginfb';
+
+    public function actionOauth()
     {
-        echo 'req '.$_SERVER['REQUEST_URI'];
-        echo '<br />qs '.$_SERVER['QUERY_STRING'];
-        if(isset($_GET['from']) && isset($_GET['to']))
-        {
-            $action='login';
-            $sender=$_GET['from'];
-            Yii::$app->session['return_url']=$sender;
-            if($_GET['to']=='fb') {header('Location: https://www.facebook.com/dialog/oauth?client_id=892335240862509&redirect_uri=http://yii.collegestatistics.org/site/loginfb');}
-            if($_GET['to']=='vk') {header('Location: http://oauth.vk.com/authorize?client_id=4195734&response_type=code&redirect_uri=http://desko.kg/auth/'.$action.'vk');}
-            if($_GET['to']=='ok') {header('Location: http://www.odnoklassniki.ru/oauth/authorize?client_id=223808256&response_type=code&redirect_uri=http://desko.kg/auth/'.$action.'ok');}
-            if($_GET['to']=='mailru') {header('Location: https://connect.mail.ru/oauth/authorize?client_id=717376&response_type=code&redirect_uri=http%3A%2F%2Fdesko.kg%2Fauth%2F'.$action.'mailru');}
-            if($_GET['to']=='gplus') {header('Location: https://accounts.google.com/o/oauth2/auth?client_id=553652608799-ud3uk6foe45h3stkbj2304mc9r61rphc.apps.googleusercontent.com&response_type=code&scope=openid%20email&redirect_uri=http://desko.kg/auth/googleauth&state='.$action.'google');}
-        }
-        else echo 'nope';
+        //echo 'req '.$_SERVER['REQUEST_URI'];
+        //echo '<br />qs '.$_SERVER['QUERY_STRING'];
+       // if(isset($_GET['from']) && isset($_GET['to']))
+        //{
+            //$action='login';
+            //$sender=$_GET['from'];
+            //Yii::$app->session['return_url']=$sender;
+            if($_GET['to']=='fb')
+            {
+                header('Location: https://www.facebook.com/dialog/oauth?client_id='
+                .$this->fb_client_id.'&redirect_uri='.$this->fb_redirect_uri.'&scope=email');
+            }
+            //if($_GET['to']=='vk') {header('Location: http://oauth.vk.com/authorize?client_id=4195734&response_type=code&redirect_uri=http://desko.kg/auth/'.$action.'vk');}
+           // if($_GET['to']=='ok') {header('Location: http://www.odnoklassniki.ru/oauth/authorize?client_id=223808256&response_type=code&redirect_uri=http://desko.kg/auth/'.$action.'ok');}
+            //if($_GET['to']=='mailru') {header('Location: https://connect.mail.ru/oauth/authorize?client_id=717376&response_type=code&redirect_uri=http%3A%2F%2Fdesko.kg%2Fauth%2F'.$action.'mailru');}
+            //if($_GET['to']=='gplus') {header('Location: https://accounts.google.com/o/oauth2/auth?client_id=553652608799-ud3uk6foe45h3stkbj2304mc9r61rphc.apps.googleusercontent.com&response_type=code&scope=openid%20email&redirect_uri=http://desko.kg/auth/googleauth&state='.$action.'google');}
+       // }
+        //else echo 'nope';
     }
 
     public function actionLoginfb()
     {
-        print_r($_GET);
+        $app=Yii::$app;
+        if(isset($_GET['error_reason']) && $_GET['error_reason']=='user_denied')
+        {
+            if(isset($app->session['return_url']) && $rurl=$app->session['return_url'])
+            {
+                $this->redirect($rurl);
+            }
+            else
+                $this->redirect('/site/login');
+        }
+        if(isset($_GET['code']))
+        {
+            $code=$_GET['code'];
+            $url="https://graph.facebook.com/v2.3/oauth/access_token?client_id={$this->fb_client_id}&redirect_uri={$this->fb_redirect_uri}&client_secret={$this->fb_client_secret}&code={$code}";
+            if($curl = curl_init()) {
+                curl_setopt($curl, CURLOPT_URL, $url);
+                curl_setopt($curl, CURLOPT_HEADER, 0);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+                $out = curl_exec($curl);
+                $outObj=json_decode($out);
+                $app->session['fb_token']=$outObj->access_token;;
+                curl_close($curl);
+                $this->fbauth($outObj->access_token);
+            }
+
+        }
+    }
+
+    protected function fbauth($fb_token)
+    {
+        $app=Yii::$app;
+        $dao=$app->db;
+        $url="https://graph.facebook.com/debug_token?input_token={$fb_token}&access_token={$this->fb_client_id}|{$this->fb_client_secret}";
+        if( $curl = curl_init() ) {
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_HEADER, 0);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+            $out = curl_exec($curl);
+            //$outarray=json_decode(preg_replace('/("\w+"):(\d+(\.\d+)?)/', '\\1:"\\2"', $out), true); //converting integer to string so that json_decode can convert
+            $outObj=json_decode($out); //converting integer to string so that json_decode can convert
+            curl_close($curl);
+        }
+
+        if(isset($outObj))
+        {
+            if($outObj->data->app_id==$this->fb_client_id && $outObj->data->is_valid) //token app id is equal to app id, then it is reliable
+            {
+                $fb_user_id=$outObj->data->user_id;
+                //graph request
+                $url="https://graph.facebook.com/{$fb_user_id}?fields=picture,first_name,last_name,email&access_token={$fb_token}";
+                if( $curl = curl_init() ) {
+                    curl_setopt($curl, CURLOPT_URL, $url);
+                    curl_setopt($curl, CURLOPT_HEADER, 0);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+                    $out = curl_exec($curl);
+                    $graph=json_decode($out);
+                    curl_close($curl);
+                }
+            }
+        }
+
+
+    }
+
+    public function actionRun2(){
+        $session = Yii::$app->session;
+        $session['myhump']='sekasa';
+        echo $session['myhump'];
+// check if a session is already open
+        //if ($session->isActive) echo 'open'; else echo 'nope';
     }
 }
