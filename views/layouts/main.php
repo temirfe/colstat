@@ -27,6 +27,7 @@ AppAsset::register($this);
     <?php $this->beginBody() ?>
     <?php
     $yiiuser=Yii::$app->user;
+    if (!$yiiuser->isGuest){echo 'asdf '.$yiiuser->identity->updated_at;}
     ?>
     <div class="wrap">
         <?php

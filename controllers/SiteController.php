@@ -701,12 +701,12 @@ class SiteController extends Controller
         else return "error";
     }
 
-    public function actionTwiLogin()
+    public function actionTwilogin()
     {
         $this->render('twitter/twilogin');
     }
 
-    public function actionTwiAuth()
+    public function actionTwiauth()
     {
         $this->render('twitter/twiauth');
     }

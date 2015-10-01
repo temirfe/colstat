@@ -31,7 +31,6 @@
                     $app->user->login($identity, $duration);
                     $sql="UPDATE user SET lastvisit=UNIX_TIMESTAMP() WHERE id='{$user_id}'";
                     $dao->createCommand($sql)->execute();
-                    $this->goHome();
                 }
                 else //register
                 {
@@ -40,7 +39,7 @@
                         'username' =>$content->screen_name,
                         'password_hash' => 'asdfasdfsdfasdf',
                         'twi_id' => $content->id,
-                        'status' => 0,
+                        'status' => 1,
                         'city' => 'N/A',
                         'state' => 'N/A',
                         'created_at' => time(),
@@ -48,10 +47,9 @@
                     $identity=User::findOne(['username'=>$content->screen_name]);
                     $duration=3600*24*30; // 30 days
                     $app->user->login($identity, $duration);
-                    Yii::$app->getSession()->setFlash('success', 'Please complete your profile to activate.');
-                    $this->goHome();
+                    Yii::$app->session->setFlash('success', 'Please complete your profile to activate.');
                 }
-                //redirect to main page. Your own
+                Yii::$app->response->redirect('/');
             }
         }
     }

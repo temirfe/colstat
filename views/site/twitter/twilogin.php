@@ -9,11 +9,6 @@
     $OAUTH_CALLBACK='http://yii.collegestatistics.org/site/twiauth';
 
     require_once('twitteroauth.php');
-    $type=$_GET['type'];
-    $session['twi_type']=$type;
-    $sender=$_GET['from'];
-    $session['return_url']=$sender;
-
 
     $connection = new TwitterOAuth($CONSUMER_KEY, $CONSUMER_SECRET);
     $request_token = $connection->getRequestToken($OAUTH_CALLBACK); //get Request Token
