@@ -534,7 +534,7 @@ class SiteController extends Controller
                     $dao=$app->db;
                     $google_user_id=$outObj->sub;
                     $user_id=$dao->createCommand("SELECT id FROM user WHERE google_id='{$google_user_id}'")->queryScalar();
-                    if($user_id)
+                    if($user_id) //login
                     {
                         $identity=User::findOne($user_id); //parameters are required
                         $duration=3600*24*30; // 30 days
@@ -544,7 +544,7 @@ class SiteController extends Controller
                         $this->goHome();
 
                     }
-                    else
+                    else //register
                     {
                         $user_id2=$dao->createCommand("SELECT id FROM user WHERE email='{$outObj->email}'")->queryScalar();
                         if($user_id2)
@@ -564,7 +564,7 @@ class SiteController extends Controller
                                 'username' =>$outObj->email,
                                 'password_hash' => 'asdfasdfsdfasdf',
                                 'email' => $outObj->email,
-                                'fb_id' => $outObj->sub,
+                                'google_id' => $outObj->sub,
                                 'status' => 1,
                                 'city' => 'N/A',
                                 'state' => 'N/A',
@@ -699,6 +699,16 @@ class SiteController extends Controller
             else return "error";
         }
         else return "error";
+    }
+
+    public function actionTwiLogin()
+    {
+        $this->render('twitter/twilogin');
+    }
+
+    public function actionTwiAuth()
+    {
+        $this->render('twitter/twiauth');
     }
 
     public function actionRun2(){
