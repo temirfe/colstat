@@ -12,6 +12,8 @@ use app\models\User;
  */
 class UserSearch extends User
 {
+    public $title;
+    public $phone;
     /**
      * @inheritdoc
      */
@@ -23,6 +25,11 @@ class UserSearch extends User
             ['username', 'string'],
             ['email', 'string'],
             ['phone', 'string'],
+            ['city', 'string'],
+            ['state', 'string'],
+            ['status', 'string'],
+            ['name', 'string'],
+            ['role', 'string'],
         ];
     }
 
@@ -64,6 +71,10 @@ class UserSearch extends User
             'username' => $this->username,
             'email' => $this->email,
             'phone' => $this->phone,
+            'city' => $this->city,
+            'state' => $this->state,
+            'status' => $this->status,
+            'role' => $this->role,
         ]);
 
         return $dataProvider;

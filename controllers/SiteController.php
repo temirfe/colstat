@@ -63,6 +63,10 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+        $yiiuser=Yii::$app->user;
+        if (!$yiiuser->isGuest && $yiiuser->identity->updated_at==0){
+            $this->redirect(['/user/update','id'=>$yiiuser->id, 'type'=>'complete']);
+        }
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 
@@ -574,7 +578,7 @@ class SiteController extends Controller
                             $duration=3600*24*30; // 30 days
                             $app->user->login($identity, $duration);
                             Yii::$app->getSession()->setFlash('success', 'You have been registered via Google Plus. Please complete your profile.');
-                            $this->goHome();
+                            $this->redirect(['/user/update','id'=>$identity->id, 'type'=>'complete']);
                         }
                     }
                 }
@@ -690,7 +694,8 @@ class SiteController extends Controller
                             $duration=3600*24*30; // 30 days
                             $app->user->login($identity, $duration);
                             Yii::$app->getSession()->setFlash('success', 'You have been registered via facebook. Please complete your profile.');
-                            return $this->goHome();
+                            $this->redirect(['/user/update','id'=>$identity->id, 'type'=>'complete']);
+                            return true; //this is not needed but phpstorm says it's kinda not good not to have return;
                         }
                     }
                     else return "error";

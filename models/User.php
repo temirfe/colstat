@@ -97,6 +97,7 @@ class User extends ActiveRecord implements IdentityInterface
             'created_at' => 'Created',
             'updated_at' => 'Updated',
             'hear' => 'How did you hear about us? ',
+            'name' => 'Full Name',
         ];
     }
 
@@ -271,9 +272,9 @@ class User extends ActiveRecord implements IdentityInterface
         $this->email_confirm_token = null;
     }
 
-    public static function isAdmin($username)
+    public static function isAdmin()
     {
-        if (static::findOne(['username' => $username, 'role' => self::ROLE_ADMIN])){
+        if (static::findOne(['id' => Yii::$app->user->id, 'role' => self::ROLE_ADMIN])){
             return true;
         } else {
             return false;

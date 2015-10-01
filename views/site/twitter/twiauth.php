@@ -31,6 +31,7 @@
                     $app->user->login($identity, $duration);
                     $sql="UPDATE user SET lastvisit=UNIX_TIMESTAMP() WHERE id='{$user_id}'";
                     $dao->createCommand($sql)->execute();
+                    Yii::$app->response->redirect('/');
                 }
                 else //register
                 {
@@ -48,8 +49,8 @@
                     $duration=3600*24*30; // 30 days
                     $app->user->login($identity, $duration);
                     Yii::$app->session->setFlash('success', 'Please complete your profile to activate.');
+                    Yii::$app->response->redirect(['/user/update','id'=>$identity->id, 'type'=>'complete']);
                 }
-                Yii::$app->response->redirect('/');
             }
         }
     }
