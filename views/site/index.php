@@ -13,6 +13,21 @@ $sliderModels = [
     2=>['image'=>'banner1.jpg', 'text'=>'College Statistics is your portal to transparency into the admissions process. Find information and statistics about schools you are interested in, and see where applicants similar to yourself have been admitted.'],
 ]
 ?>
+<style type="text/css">
+    .container {
+        background-color: transparent;
+    }
+    .logo {
+        margin-top: -121px;
+    }
+    .wrap > .container {
+        padding: 70px 15px 20px;
+    }
+    section#content {
+        margin-top: 53px;
+    }
+
+</style>
 <div class="site-index">
 
     <div class="slider_container">
@@ -95,10 +110,26 @@ $sliderModels = [
                     <i class="fa fa-unlock"></i>
                 </button>
                 <div class="clear"></div>
-                <a class="register" href="/signup">Register</a>
-                <a class="forgot_password" href="/request-password-reset">Forgot your password?</a>
-
                 <?php ActiveForm::end(); ?>
+
+                <div class="row index-login">
+                    <div class="col-md-7">
+                        <a class="register" href="/signup">Register</a>
+                        <a class="forgot_password" href="/request-password-reset">Forgot your password?</a>
+                    </div>
+                    <div class="col-md-5" style="padding-top: 15px;">
+                        or with:
+                        <a href="http://yii.collegestatistics.org/site/oauth?to=fb" class="index-social-login">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                        <a href="http://yii.collegestatistics.org/site/oauth?to=google" class="index-social-login">
+                            <i class="fa fa-google"></i>
+                        </a>
+                        <a href="http://yii.collegestatistics.org/site/twilogin" class="index-social-login">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
             <?php endif; ?>
         </div>
         <div class="box white">
@@ -112,6 +143,35 @@ $sliderModels = [
         </div>
     </div>
 </div>
+
+<section id="social">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="social-sharing" data-permalink="http://labs.carsonshold.com/social-sharing-buttons">
+                    <a class="share-facebook" href="http://www.facebook.com/sharer.php?u=http://labs.carsonshold.com/social-sharing-buttons" target="_blank">
+                        <span class="icon icon-facebook" aria-hidden="true"></span>
+                        <span class="share-title">Share</span>
+                        <span class="share-count is-loaded">0</span>
+                    </a>
+                    <a target="_blank" href="http://twitter.com/share?url=http://labs.carsonshold.com/social-sharing-buttons" class="share-twitter">
+                        <span class="icon icon-twitter"></span>
+                        <span class="share-title">Tweet</span>
+                        <span class="share-count">0</span>
+                    </a>
+                    <a class="share-pinterest" href="http://pinterest.com/pin/create/button/?url=http://labs.carsonshold.com/social-sharing-buttons&media=http://labs.carsonshold.com/social-sharing-buttons/demo.png&description=jQuery%20social%20media%20buttons%20with%20share%20counts%20on%20GitHub" target="_blank">
+                        <span class="icon icon-pinterest" aria-hidden="true"></span>
+                        <span class="share-title">Pin it</span>
+                    </a>
+                    <a class="share-google" href="http://plus.google.com/share?url=http://labs.carsonshold.com/social-sharing-buttons" target="_blank">
+                        <span class="icon icon-google" aria-hidden="true"></span>
+                        <span class="share-count is-loaded">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <?php $this->registerJsFile('/js/jquery.bxslider.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]);?>
 <?php $this->registerCssFile('/css/jquery.bxslider.css');?>

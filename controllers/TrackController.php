@@ -3,19 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\User;
-use app\models\UserSearch;
-use app\models\UndergradProfile;
-use app\models\Gprofile;
+use app\models\Track;
+use app\models\TrackSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\TrackSearch;
 
 /**
- * UserController implements the CRUD actions for User model.
+ * TrackController implements the CRUD actions for Track model.
  */
-class UserController extends Controller
+class TrackController extends Controller
 {
     public function behaviors()
     {
@@ -30,12 +27,12 @@ class UserController extends Controller
     }
 
     /**
-     * Lists all User models.
+     * Lists all Track models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
+        $searchModel = new TrackSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,46 +42,39 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a single User model.
+     * Displays a single Track model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-        $searchModel = new TrackSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        $profile=UndergradProfile::findOne(['user_id'=>$id]);
-        $gprofile=Gprofile::findOne(['user_id'=>$id]);
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'profile'=>$profile,
-            'gprofile'=>$gprofile,
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Creates a new User model.
+     * Creates a new Track model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        /*$model = new User();
+        $model = new Track();
+
+        $model->user_id=Yii::$app->user->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['/'.$model->model_type.'/view', 'id' => $model->model_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
             ]);
-        }*/
+        }
     }
 
     /**
-     * Updates an existing User model.
+     * Updates an existing Track model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -94,7 +84,7 @@ class UserController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['/'.$model->model_type.'/view', 'id' => $model->model_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -103,7 +93,7 @@ class UserController extends Controller
     }
 
     /**
-     * Deletes an existing User model.
+     * Deletes an existing Track model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -116,15 +106,15 @@ class UserController extends Controller
     }
 
     /**
-     * Finds the User model based on its primary key value.
+     * Finds the Track model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return User the loaded model
+     * @return Track the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne($id)) !== null) {
+        if (($model = Track::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

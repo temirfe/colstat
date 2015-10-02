@@ -5,11 +5,11 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\UndergradProfile */
+/* @var $model app\models\Gprofile */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="undergrad-profile-form">
+<div class="gprofile-form">
 
     <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
     <?=$form->field($model, 'gender')->dropDownList(['Male'=>'Male','Female'=>'Female'],['prompt'=>'Select..']); ?>
@@ -18,27 +18,22 @@ use yii\bootstrap\ActiveForm;
         'Black or African American'=>'Black or African American','Hispanic/Latino'=>'Hispanic/Latino',
         'White'=>'White','N/A'=>'N/A'],['prompt'=>'Select..']); ?>
 
-    <?= $form->field($model, 'entering_class')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'appl_cycle_year')->textInput(['maxlength' => true]) ?>
 
-    <?=$form->field($model, 'prospective_major')->dropDownList(['A'=>'A','B'=>'B'],['prompt'=>'Select..']); ?>
+    <?= $form->field($model, 'undergrad_inst')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'high_school')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'major')->textInput(['maxlength' => true]) ?>
+    <?=$form->field($model, 'degree_awarded')->dropDownList(['Cum Laude'=>'Cum Laude',
+        'Magma Cum Laude'=>'Magma Cum Laude',
+        'Summa Cum Laude'=>'Summa Cum Laude','N/A'=>'N/A'],['prompt'=>'Select..']); ?>
 
-    <?= $form->field($model, 'gpa_unweighted')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'gpa_weighted')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'gpa')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'class_rank')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'class_size')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'work_exp')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'ap_courses_taken')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'ib_student')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'foreign_languages_taken')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'years_taken')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'study_abroad_exp')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'extracur')->textarea(['rows' => 6]) ?>
 

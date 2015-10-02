@@ -11,7 +11,13 @@ body {
 }
 
 .wrap > .container {
-    padding: 70px 15px 20px;
+    padding: 0 15px;
+}
+.container {
+    background-color: #fff;
+}
+.footer .container {
+    background-color: transparent;
 }
 
 .footer {
@@ -130,10 +136,11 @@ a.desc:after {
 }
 
 .logo {
-    margin-top: -121px;
+    height: 179px;
+    margin-top: -150px;
+    overflow: hidden;
     position: absolute;
 }
-
 .main_menu {
     font-size: 15px;
     margin-left: 180px;
@@ -152,9 +159,6 @@ a.desc:after {
     text-decoration: none;
 }
 
-.main_menu a:focus {
-    background-color: #eee;
-}
 
 .main_menu a:hover {
     color: #44afc6;
@@ -180,8 +184,15 @@ a.desc:after {
 section#content {
     background-color: #f9f9f9;
     border-top: 1px solid #f1f1f1;
-    margin-top: 53px;
+    margin-top: 5px;
+    padding-bottom: 33px;
 }
+.breadcrumb {
+    background-color: transparent;
+    margin-bottom: 0;
+    padding: 8px 0;
+}
+.bread_container{background-color: transparent;padding: 0;}
 
 .slider_container {
     margin-top: 40px;
@@ -326,14 +337,14 @@ section#social {
     clear: both;
 }
 
-#login-form .register {
-    display: block;
+.index-login .register {
+    display: inline-block;
     font-size: 13px;
 }
 
-#login-form .forgot_password {
+.index-login .forgot_password {
     color: #959595;
-    display: block;
+    display: inline-block;
     font-size: 13px;
 }
 
@@ -342,4 +353,20 @@ section#social {
     background-color: #44afc6;
     border-color: #44afc6;
 }
+.index-social-login{text-decoration: none !important; margin: 0 4px;}
 .detail-view{max-width:500px; background-color: #f6f6f6;}
+.offset-button{padding-left:5px;}
+.help-block {margin-bottom: 0;}
+.comment-wrap{clear:both;}
+.comment-col{ margin-top: 2px;}
+.comment-name{font-weight: bold;}
+.comment-date{color: #777;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 21px;
+    margin-left: 15px;}
+a:focus {
+    outline: 0;
+}
+.field140{max-width:140px;}
+.mt10{margin-top: 10px;}

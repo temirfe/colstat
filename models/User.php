@@ -101,6 +101,10 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
+    /*public function getComments()
+    {
+        return $this->hasMany(Comment::className(), ['model_id' => 'id']);
+    }*/
     /**
      * @inheritdoc
      */
@@ -279,5 +283,10 @@ class User extends ActiveRecord implements IdentityInterface
         } else {
             return false;
         }
+    }
+
+    public function getGpa_un()
+    {
+        return $this->getPrimaryKey();
     }
 }

@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model) {
                     return date('Y-m-d',$model->created_at);
                 },
-                'contentOptions'=>['style'=>'max-width: 100px;'] // <-- right here
+                'contentOptions'=>['style'=>'max-width: 100px;']
             ],
             [
                 'attribute' => 'updated_at',

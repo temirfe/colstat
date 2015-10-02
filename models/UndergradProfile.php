@@ -67,7 +67,7 @@ class UndergradProfile extends \yii\db\ActiveRecord
             'prospective_major' => 'Prospective Major',
             'high_school' => 'High School',
             'gpa_unweighted' => 'GPA Unweighted',
-            'gpa_weighted' => 'Gpa Weighted',
+            'gpa_weighted' => 'GPA Weighted',
             'class_rank' => 'Class Rank',
             'class_size' => 'Class Size',
             'ap_courses_taken' => 'AP Courses Taken',

@@ -39,7 +39,7 @@ AppAsset::register($this);
                     'url'=>['#'],
                     'template' => '<a href="{url}" class="dropdown-toggle" data-toggle="dropdown">{label}<b class="caret"></b></a>',
                     'items' => [
-                        ['label' => 'Profile', 'url' => ['/user/profile?id='.$userid]],
+                        ['label' => 'Profile', 'url' => ['/user/view','id'=>$userid]],
                         ['label' => 'Logout', 'url' => ['/site/logout'], 'template' => '<a href="{url}" data-method="post">{label}</a>',],
                     ]
                 ];
@@ -108,7 +108,7 @@ AppAsset::register($this);
                         ],
                     ],
                     ['label' => 'APPLICATION PROCESS', 'url' => ['/application-process']],
-                    ['label' => 'TEST PREP', 'url' => ['/test-prep']],
+                    ['label' => 'TEST PREP','url'=>['/test-prep']],
                 ],
                 'submenuTemplate' => "\n<ul class='dropdown-menu' role='menu'>\n{items}\n</ul>\n",
                 'options' => [
@@ -120,49 +120,31 @@ AppAsset::register($this);
 
 
         <section id="content">
-            <div class="container">
+            <div class="container bread_container">
                 <?= Breadcrumbs::widget([
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ]) ?>
+            </div>
+
+            <div class="container">
                 <?= Alert::widget() ?>
                 <?= $content ?>
+                <?php
+                $com_models=['undergraduate','medical','business','physical','dental','engineering','law','nursing','occupational','optometry','pharmacy','user'];
+                $model_type=Yii::$app->controller->id;
+                $model_action=Yii::$app->controller->action->id;
+                if(in_array($model_type,$com_models) && $model_action=='view'){
+
+                    $model_id=Yii::$app->request->get('id');
+                    echo $this->render('_comment', [
+                        'model_type' => $model_type,
+                        'model_id' => $model_id,
+                    ]);
+                }
+                ?>
             </div>
         </section>
     </div>
-
-    <section id="social">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="social-sharing" data-permalink="http://labs.carsonshold.com/social-sharing-buttons">
-                        <a class="share-facebook" href="http://www.facebook.com/sharer.php?u=http://labs.carsonshold.com/social-sharing-buttons" target="_blank">
-                            <span class="icon icon-facebook" aria-hidden="true"></span>
-                            <span class="share-title">Share</span>
-                            <span class="share-count is-loaded">0</span>
-                        </a>
-                        <a target="_blank" href="http://twitter.com/share?url=http://labs.carsonshold.com/social-sharing-buttons" class="share-twitter">
-                            <span class="icon icon-twitter"></span>
-                            <span class="share-title">Tweet</span>
-                            <span class="share-count">0</span>
-                        </a>
-                        <a class="share-pinterest" href="http://pinterest.com/pin/create/button/?url=http://labs.carsonshold.com/social-sharing-buttons&media=http://labs.carsonshold.com/social-sharing-buttons/demo.png&description=jQuery%20social%20media%20buttons%20with%20share%20counts%20on%20GitHub" target="_blank">
-                            <span class="icon icon-pinterest" aria-hidden="true"></span>
-                            <span class="share-title">Pin it</span>
-                        </a>
-                        <a class="share-google" href="http://plus.google.com/share?url=http://labs.carsonshold.com/social-sharing-buttons" target="_blank">
-                            <span class="icon icon-google" aria-hidden="true"></span>
-                            <span class="share-count is-loaded">0</span>
-                        </a>
-                        <a class="share-fancy" href="http://www.thefancy.com/fancyit?ItemURL=http://labs.carsonshold.com/social-sharing-buttons&Title=Tina%20the%20dachsund&Category=Other&ImageURL=http://distilleryimage3.ak.instagram.com/6477684ac48d11e19ab222000a1e8819_7.jpg" target="_blank">
-                            <span class="icon icon-fancy" aria-hidden="true"></span>
-                            <span class="share-title">Fancy</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <footer class="footer">
         <div class="container">
             <p class="pull-left">&copy; <?= date('Y') ?> COLLEGE STATISTICS </p>
