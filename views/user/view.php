@@ -47,16 +47,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
-                        'attribute' => 'user_id',
-                        'format' => 'raw',
+                        'label' => 'University Name',
+                        'format'=>'html',
                         'value' => function($model) {
-                            return Html::a($model->user->name, ['/user/view', 'id' => $model->user_id]);
+                            $table=$model->model_type; if($model->model_type=='undergraduate') $table='university';
+                            $name=Yii::$app->db->createCommand("SELECT name FROM {$table} WHERE id='{$model->model_id}'")->queryScalar();
+                            return Html::a($name, ['/'.$model->model_type.'/view', 'id' => $model->model_id]);
                         },
                         'headerOptions' => ['width' => '200'],
                     ],
-                    'test_score',
-                    'gpa',
-                    'scholarship_award',
                     'status',
                     [
                         'attribute' => 'date_sent',
@@ -70,7 +69,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'date_status_complete',
                         'format' => 'raw',
                         'value' => function($model) {
-                            return date('d M Y',strtotime($model->date_status_complete));
+                            if($model->date_status_complete) $date=date('d M Y',strtotime($model->date_status_complete));
+                            else $date='N/A';
+                            return $date;
                         },
                     ],
 
@@ -78,9 +79,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'date_update',
                         'format' => 'raw',
                         'value' => function($model) {
-                            return date('d M Y',strtotime($model->date_update));
+                            if($model->date_update) $date=date('d M Y',strtotime($model->date_update));
+                            else $date='N/A';
+                            return $date;
                         },
                     ],
+                    'scholarship_award',
                 ],
             ]); ?>
         </div>

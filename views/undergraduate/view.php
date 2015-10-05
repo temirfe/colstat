@@ -66,7 +66,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'date_status_complete',
                         'format' => 'raw',
                         'value' => function($model) {
-                            return date('d M Y',strtotime($model->date_status_complete));
+                            if($model->date_status_complete) $date=date('d M Y',strtotime($model->date_status_complete));
+                            else $date='N/A';
+                            return $date;
                         },
                     ],
 
@@ -74,7 +76,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'date_update',
                         'format' => 'raw',
                         'value' => function($model) {
-                            return date('d M Y',strtotime($model->date_update));
+                            if($model->date_update) $date=date('d M Y',strtotime($model->date_update));
+                            else $date='N/A';
+                            return $date;
                         },
                     ],
                 ],
