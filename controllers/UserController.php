@@ -8,9 +8,11 @@ use app\models\UserSearch;
 use app\models\UndergradProfile;
 use app\models\Gprofile;
 use yii\web\Controller;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\TrackSearch;
+use app\models\Track;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -52,7 +54,13 @@ class UserController extends Controller
     public function actionView($id)
     {
         $searchModel = new TrackSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Track::find()->where(['user_id'=>$id]),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+
 
         $profile=UndergradProfile::findOne(['user_id'=>$id]);
         $gprofile=Gprofile::findOne(['user_id'=>$id]);

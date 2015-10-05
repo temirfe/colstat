@@ -42,3 +42,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php ActiveForm::end(); ?>
 </div>
+    <div style="margin-top:40px;">
+        login or with:
+        <a href="http://yii.collegestatistics.org/site/oauth?to=fb" class="index-social-login">
+            <i class="fa fa-facebook"></i>
+        </a>
+        <a href="http://yii.collegestatistics.org/site/oauth?to=google" class="index-social-login">
+            <i class="fa fa-google"></i>
+        </a>
+        <a href="http://yii.collegestatistics.org/site/twilogin" class="index-social-login">
+            <i class="fa fa-twitter"></i>
+        </a>
+    </div>
+
+<div style="margin-top:20px;">
+    <?= Html::a('Registration', ['/site/signup']) ?>
+</div>
+<?php $this->registerCssFile('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css');?>

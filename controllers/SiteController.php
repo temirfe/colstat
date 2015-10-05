@@ -717,10 +717,11 @@ class SiteController extends Controller
     }
 
     public function actionRun2(){
-        $session = Yii::$app->session;
-        $session['myhump']='sekasa';
-        echo $session['myhump'];
-// check if a session is already open
-        //if ($session->isActive) echo 'open'; else echo 'nope';
+        $user=User::findOne(2);
+        Yii::$app->mailer->compose('emailConfirm', ['user' => $user])
+            ->setFrom(['no-rep@college.org' => Yii::$app->name])
+            ->setTo('temirbek@gmail.com')
+            ->setSubject('Email confirmation for ' . Yii::$app->name)
+            ->send();
     }
 }

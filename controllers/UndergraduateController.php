@@ -7,8 +7,10 @@ use app\models\Undergraduate;
 use app\models\UndergraduateSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use app\models\TrackSearch;
+use app\models\Track;
 
 /**
  * UndergraduateController implements the CRUD actions for Undergraduate model.
@@ -50,7 +52,12 @@ class UndergraduateController extends Controller
     public function actionView($id)
     {
         $searchModel = new TrackSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Track::find()->where(['model_id'=>$id,'model_type'=>'undergraduate']),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
             'searchModel' => $searchModel,

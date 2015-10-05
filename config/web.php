@@ -29,11 +29,10 @@ $config = [
             'useFileTransport' => false,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.gmail.com',
-                'username' => 'prosoftmailer@gmail.com',
-                'password' => 'temirbek',
-                'port' => '465',
-                'encryption' => 'ssl',
+                'host' => 'relay-hosting.secureserver.net',
+                'username' => 'no-reply@collegestatistics.org',
+                'password' => '',
+                'port' => '25',
             ],
         ],
         'log' => [
