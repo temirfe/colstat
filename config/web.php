@@ -6,7 +6,9 @@ $config = [
     'id' => 'basic',
     'name'=>'College Statistics',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', [
+        'class' => 'app\components\DynamicUrl'
+    ],],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -55,8 +57,6 @@ $config = [
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
                 '<_a:(login|logout|signup|email-confirm|request-password-reset|password-reset)>' => '/site/<_a>',
-                '<_m:[\w\-]+>/<_c:[\w\-]+>/<_a:[\w\-]+>/<id:\d+>' => '<_m>/<_c>/<_a>',
-                '<_m:[\w\-]+>/<_c:[\w\-]+>/<id:\d+>' => '<_m>/<_c>/view',
                 'graduate-schools/pharmacy-schools' => 'pharmacy',
                 'graduate-schools/law-schools' => 'law',
                 'graduate-schools/occupational-therapy-schools' => 'occupational',
@@ -67,9 +67,6 @@ $config = [
                 'graduate-schools/optometry-schools' => 'optometry',
                 'graduate-schools/engineering-schools' => 'engineering',
                 'graduate-schools/business-schools' => 'business',
-                'test-prep-books'=>'page/view/18',
-                'test-prep-courses'=>'page/view/19',
-                'test-prep'=>'page/17',
             ),
         ],
         'assetManager' => [

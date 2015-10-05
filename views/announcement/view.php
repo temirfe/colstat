@@ -1,11 +1,14 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Page */
-$this->title=$model->title.' | CollegeStatistics.org';
-$this->params['breadcrumbs']=$breadcrumbs;
+/* @var $model app\models\Announcement */
+
+$this->title = $model->title;
+$this->params['breadcrumbs'][] = ['label' => 'Announcements', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()){
     ?>
@@ -23,18 +26,17 @@ $this->params['breadcrumbs']=$breadcrumbs;
     </div>
 <?php
 }?>
-    <h1><?= Html::encode($model->title) ?></h1>
-<div class="page-view">
-    <div class="row">
-        <div class="col-md-9">
-            <?=$model->content; ?>
-        </div>
-        <div class="col-md-3">
-            <?php if($children){
-                foreach($children as $child){
-                    echo "<div class='page_menu'>".Html::a($child['title'],[$child['slug'].'/'.$child['id']])."</div>";
-                }
-            }?>
-        </div>
+<div class="announcement-view">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <div class="date">
+        <?=date('d M Y',strtotime($model->created_at));?>
     </div>
+    <?=$model->description;?>
+    <article>
+        <?=$model->content;?>
+    </article>
+
+
 </div>

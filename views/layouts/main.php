@@ -4,7 +4,7 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
+use yii\helpers\Url;
 use yii\bootstrap\NavBar;
 use app\components\widgets\Alert;
 use yii\widgets\Breadcrumbs;
@@ -33,6 +33,7 @@ AppAsset::register($this);
             if (!$yiiuser->isGuest) {
                 $username=$yiiuser->identity->username;
                 $userid=$yiiuser->identity->id;
+                if($yiiuser->identity->isAdmin()) $upload=['label' => 'Upload', 'url' => ['/site/upload']]; else $upload='';
                 $logout=[
                     'label' => $username,
                     'options'=>['class'=>'dropdown'],
@@ -40,6 +41,7 @@ AppAsset::register($this);
                     'template' => '<a href="{url}" class="dropdown-toggle" data-toggle="dropdown">{label}<b class="caret"></b></a>',
                     'items' => [
                         ['label' => 'Profile', 'url' => ['/user/view','id'=>$userid]],
+                        $upload,
                         ['label' => 'Logout', 'url' => ['/site/logout'], 'template' => '<a href="{url}" data-method="post">{label}</a>',],
                     ]
                 ];
@@ -56,10 +58,10 @@ AppAsset::register($this);
                 <?php
                 echo Menu::widget([
                     'items' => [
-                        ['label' => 'About us', 'url' => ['/page/24']],
-                        ['label' => 'FAQ', 'url' => ['/page/25']],
-                        ['label' => 'Terms of Use', 'url' => ['/page/26']],
-                        ['label' => 'Contact us', 'url' => ['/page/27']],
+                        ['label' => 'About us', 'url' => ['/about-us/24']],
+                        ['label' => 'FAQ', 'url' => ['/faq/25']],
+                        ['label' => 'Terms of Use', 'url' => ['/terms/26']],
+                        ['label' => 'Contact us', 'url' => ['/contacts/27']],
                         $logout
                     ],
 
@@ -107,8 +109,8 @@ AppAsset::register($this);
                             ['label' => 'ENGINEERING', 'url' => ['/graduate-schools/engineering-schools']],
                         ],
                     ],
-                    ['label' => 'APPLICATION PROCESS', 'url' => ['/application-process']],
-                    ['label' => 'TEST PREP','url'=>['/test-prep']],
+                    ['label' => 'APPLICATION PROCESS', 'url' => ['/application-process/1']],
+                    ['label' => 'TEST PREP','url'=>['/test-prep/17']],
                 ],
                 'submenuTemplate' => "\n<ul class='dropdown-menu' role='menu'>\n{items}\n</ul>\n",
                 'options' => [
@@ -145,13 +147,58 @@ AppAsset::register($this);
             </div>
         </section>
     </div>
+
+    <section id="social">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="social-sharing" data-permalink="http://labs.carsonshold.com/social-sharing-buttons">
+                        <a class="share-facebook" href="http://www.facebook.com/sharer.php?u=http://labs.carsonshold.com/social-sharing-buttons" target="_blank">
+                            <span class="icon icon-facebook" aria-hidden="true"></span>
+                            <span class="share-title">Share</span>
+                            <span class="share-count is-loaded">0</span>
+                        </a>
+                        <a target="_blank" href="http://twitter.com/share?url=http://labs.carsonshold.com/social-sharing-buttons" class="share-twitter">
+                            <span class="icon icon-twitter"></span>
+                            <span class="share-title">Tweet</span>
+                            <span class="share-count">0</span>
+                        </a>
+                        <a class="share-pinterest" href="http://pinterest.com/pin/create/button/?url=http://labs.carsonshold.com/social-sharing-buttons&media=http://labs.carsonshold.com/social-sharing-buttons/demo.png&description=jQuery%20social%20media%20buttons%20with%20share%20counts%20on%20GitHub" target="_blank">
+                            <span class="icon icon-pinterest" aria-hidden="true"></span>
+                            <span class="share-title">Pin it</span>
+                        </a>
+                        <a class="share-google" href="http://plus.google.com/share?url=http://labs.carsonshold.com/social-sharing-buttons" target="_blank">
+                            <span class="icon icon-google" aria-hidden="true"></span>
+                            <span class="share-count is-loaded">0</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6 text-right">
+                    <?php
+                    echo Menu::widget([
+                        'items' => [
+                            ['label' => 'About us', 'url' => ['/about-us/24']],
+                            ['label' => 'FAQ', 'url' => ['/faq/25']],
+                            ['label' => 'Terms of Use', 'url' => ['/terms/26']],
+                            ['label' => 'Contact us', 'url' => ['/contacts/27']],
+                        ],
+                        'options' => [
+                            'class' => 'bottom_menu',
+                        ],
+                    ]);
+                    ?>
+                </div>
+            </div>
+        </div>
+    </section>
     <footer class="footer">
         <div class="container">
             <p class="pull-left">&copy; <?= date('Y') ?> COLLEGE STATISTICS </p>
-
-            <p class="pull-right"><?=Html::a('upload', '/site/upload');?></p>
         </div>
     </footer>
+    <?php $this->registerCssFile('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css');?>
+    <?php $this->registerCssFile('/css/social-buttons.css');?>
+    <?php $this->registerJsFile('/js/social-buttons.js');?>
 
     <?php $this->endBody() ?>
     </body>
