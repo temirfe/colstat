@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Undergraduate */
@@ -37,57 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="tab-content mt10">
         <div id="home" class="tab-pane fade in active">
-            <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                'summary'=>'',
-                'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
-                    [
-                        'attribute' => 'user_id',
-                        'format' => 'raw',
-                        'value' => function($model) {
-                            return Html::a($model->user->name, ['/user/view', 'id' => $model->user_id]);
-                        },
-                        'headerOptions' => ['width' => '200'],
-                    ],
-                    'test_score',
-                    'gpa',
-                    'scholarship_award',
-                    'status',
-                    [
-                        'attribute' => 'date_sent',
-                        'format' => 'raw',
-                        'value' => function($model) {
-                            return date('d M Y',strtotime($model->date_sent));
-                        },
-                    ],
-
-                    [
-                        'attribute' => 'date_status_complete',
-                        'format' => 'raw',
-                        'value' => function($model) {
-                            if($model->date_status_complete) $date=date('d M Y',strtotime($model->date_status_complete));
-                            else $date='N/A';
-                            return $date;
-                        },
-                    ],
-
-                    [
-                        'attribute' => 'date_update',
-                        'format' => 'raw',
-                        'value' => function($model) {
-                            if($model->date_update) $date=date('d M Y',strtotime($model->date_update));
-                            else $date='N/A';
-                            return $date;
-                        },
-                    ],
-                ],
-            ]); ?>
-            <?php
-            if(Yii::$app->user->isGuest){echo Html::a('Login', '/site/login')." to add your application";}
-            else {echo Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add an application',
-                ['/track/create', 'mid' => $model->id,'type'=>'undergraduate','name'=>$model->name], ['class' => 'btn btn-success']);}
-             ?>
+            <?=$this->render('/layouts/_track',['dataProvider'=>$dataProvider,'model'=>$model]); ?>
         </div>
         <div id="about" class="tab-pane fade">
             <?= DetailView::widget([

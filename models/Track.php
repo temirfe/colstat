@@ -57,7 +57,7 @@ class Track extends \yii\db\ActiveRecord
             'model_id' => 'Model ID',
             'model_type' => 'Model Type',
             'specialty' => 'Specialty',
-            'specialty_other' => 'Specialty',
+            'specialty_other' => 'Specialty Other',
             'degree_desired' => 'Desired Degree',
             'test_score' => 'Test Score',
             'gpa' => 'GPA',

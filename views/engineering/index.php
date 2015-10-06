@@ -9,11 +9,16 @@ use yii\grid\GridView;
 
 $this->title = 'Engineering Schools';
 $this->params['breadcrumbs'][] = $this->title;
+if(!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin())
+{
+    $avisible=true;
+    $create="<div class='pull-right'>".Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"
+        title="'.Yii::t('app', 'Add new').'"></span>', ['create'], ['class' => 'btn btn-success btn-sm'])."</div>";
+}
+else {$avisible=false; $create='';}
 ?>
 <div class="engineering-index">
-    <div class="pull-right">
-        <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true" title="'.Yii::t('app', 'Add new').'"></span>', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
-    </div>
+    <?=$create;?>
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -69,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'campus_house',
             'grad_rate',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn', 'headerOptions' => ['width' => '67'],'visible'=>$avisible],
         ],
     ]); ?>
 

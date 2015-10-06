@@ -14,7 +14,7 @@ use kartik\date\DatePicker;
 
     <?php
     $user_id=Yii::$app->user->id;
-    $model_type=Yii::$app->request->get('type');
+    if($model->model_type) $model_type=$model->model_type; else $model_type=Yii::$app->request->get('type');
     $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
     <?= $form->field($model, 'model_id')->hiddenInput(['value'=>Yii::$app->request->get('mid')])->label(''); ?>
@@ -60,7 +60,8 @@ use kartik\date\DatePicker;
         }
 
         echo $form->field($model, 'specialty')->dropDownList($s_items,['prompt'=>'Select..']);
-        echo $form->field($model, 'specialty_other')->textInput(['maxlength' => true]);
+        if($model->specialty=='Other') $display=''; else $display='display:none;';
+        echo "<div class='js_sp_other' style='".$display."'>".$form->field($model, 'specialty_other')->textInput(['maxlength' => true])."</div>";
     }
     ?>
 
@@ -130,3 +131,11 @@ use kartik\date\DatePicker;
     <?php ActiveForm::end(); ?>
 
 </div>
+<script type="text/javascript">
+    window.onload=function(){
+        $('#track-specialty').change(function(){
+            if($(this).val()==='Other'){$('.js_sp_other').slideDown();}
+            else{$('.js_sp_other').val('').slideUp();}
+        });
+    };
+</script>

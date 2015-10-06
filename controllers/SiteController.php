@@ -64,7 +64,8 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $yiiuser=Yii::$app->user;
-        if (!$yiiuser->isGuest && $yiiuser->identity->updated_at==0){
+        if (!$yiiuser->isGuest && $yiiuser->identity->updated_at==0) //if registered via social media, then redirected to complete profile
+        {
             $this->redirect(['/user/update','id'=>$yiiuser->id, 'type'=>'complete']);
         }
         $model = new LoginForm();

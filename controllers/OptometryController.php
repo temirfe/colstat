@@ -8,6 +8,10 @@ use app\models\OptometrySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
+use app\models\Track;
+use yii\filters\AccessControl;
+use app\models\User;
 
 /**
  * OptometryController implements the CRUD actions for Optometry model.
@@ -21,6 +25,20 @@ class OptometryController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['create','admin','update','delete'],
+                'rules' => [
+                    [
+                        'actions' => ['create','admin','update','delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return User::isAdmin();
+                        }
+                    ],
                 ],
             ],
         ];
@@ -48,8 +66,15 @@ class OptometryController extends Controller
      */
     public function actionView($id)
     {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Track::find()->where(['model_id'=>$id,'model_type'=>'optometry']),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider'=>$dataProvider,
         ]);
     }
 

@@ -8,6 +8,8 @@ use app\models\ProfileSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use app\models\User;
 
 /**
  * ProfileController implements the CRUD actions for UndergradProfile model.
@@ -21,6 +23,20 @@ class ProfileController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['admin','delete'],
+                'rules' => [
+                    [
+                        'actions' => ['admin','delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return User::isAdmin();
+                        }
+                    ],
                 ],
             ],
         ];
@@ -80,7 +96,7 @@ class ProfileController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        if($model->user_id!=Yii::$app->user->id && !User::isAdmin()) return false;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['/user/view', 'id' => $model->user_id]);
         } else {

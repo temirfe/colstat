@@ -9,6 +9,13 @@ use yii\grid\GridView;
 
 $this->title = 'Undergrad Profiles';
 $this->params['breadcrumbs'][] = $this->title;
+if(!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin())
+{
+    $avisible=true;
+    $create="<div class='pull-right'>".Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"
+        title="'.Yii::t('app', 'Add new').'"></span>', ['create'], ['class' => 'btn btn-success btn-sm'])."</div>";
+}
+else {$avisible=false; $create='';}
 ?>
 <div class="undergrad-profile-index">
 
@@ -46,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'additional_info:ntext',
             // 'int_applicant',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn', 'headerOptions' => ['width' => '67'],'visible'=>$avisible],
         ],
     ]); ?>
 

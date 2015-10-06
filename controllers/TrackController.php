@@ -8,6 +8,8 @@ use app\models\TrackSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use app\models\User;
 
 /**
  * TrackController implements the CRUD actions for Track model.
@@ -21,6 +23,20 @@ class TrackController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['admin'],
+                'rules' => [
+                    [
+                        'actions' => ['admin'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return User::isAdmin();
+                        }
+                    ],
                 ],
             ],
         ];
@@ -82,7 +98,7 @@ class TrackController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        if($model->user_id!=Yii::$app->user->id && !User::isAdmin()) return false;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['/'.$model->model_type.'/view', 'id' => $model->model_id]);
         } else {
@@ -100,7 +116,9 @@ class TrackController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model=$this->findModel($id);
+        if($model->user_id!=Yii::$app->user->id && !User::isAdmin()) return false;
+        $model->delete();
 
         return $this->redirect(['index']);
     }

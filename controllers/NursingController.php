@@ -3,11 +3,15 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\NursingSchools;
+use app\models\Nursing;
 use app\models\NursingSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
+use app\models\Track;
+use yii\filters\AccessControl;
+use app\models\User;
 
 /**
  * NursingController implements the CRUD actions for NursingSchools model.
@@ -21,6 +25,20 @@ class NursingController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['create','admin','update','delete'],
+                'rules' => [
+                    [
+                        'actions' => ['create','admin','update','delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return User::isAdmin();
+                        }
+                    ],
                 ],
             ],
         ];
@@ -48,8 +66,15 @@ class NursingController extends Controller
      */
     public function actionView($id)
     {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Track::find()->where(['model_id'=>$id,'model_type'=>'nursing']),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider'=>$dataProvider,
         ]);
     }
 
@@ -60,7 +85,7 @@ class NursingController extends Controller
      */
     public function actionCreate()
     {
-        $model = new NursingSchools();
+        $model = new Nursing();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -107,12 +132,12 @@ class NursingController extends Controller
      * Finds the NursingSchools model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return NursingSchools the loaded model
+     * @return Nursing the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = NursingSchools::findOne($id)) !== null) {
+        if (($model = Nursing::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

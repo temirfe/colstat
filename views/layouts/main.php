@@ -4,7 +4,6 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\bootstrap\NavBar;
 use app\components\widgets\Alert;
 use yii\widgets\Breadcrumbs;
@@ -58,9 +57,9 @@ AppAsset::register($this);
                 <?php
                 echo Menu::widget([
                     'items' => [
+                        ['label' => 'Search', 'url' => ['#'],'options'=>['class'=>'js_search','data-target'=>"#search-modal", 'data-toggle'=>"modal"]],
                         ['label' => 'About us', 'url' => ['/about-us/24']],
                         ['label' => 'FAQ', 'url' => ['/faq/25']],
-                        ['label' => 'Terms of Use', 'url' => ['/terms/26']],
                         ['label' => 'Contact us', 'url' => ['/contacts/27']],
                         $logout
                     ],
@@ -196,9 +195,17 @@ AppAsset::register($this);
             <p class="pull-left">&copy; <?= date('Y') ?> COLLEGE STATISTICS </p>
         </div>
     </footer>
+    <?php
+        include_once('_search.php');
+    ?>
     <?php $this->registerCssFile('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css');?>
     <?php $this->registerCssFile('/css/social-buttons.css');?>
     <?php $this->registerJsFile('/js/social-buttons.js');?>
+    <script type="text/javascript">
+        window.onload=function(){
+            $('.js_search').click(function(e){e.preventDefault();});
+        };
+    </script>
 
     <?php $this->endBody() ?>
     </body>

@@ -8,9 +8,13 @@ use app\models\EngineeringSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
+use app\models\Track;
+use yii\filters\AccessControl;
+use app\models\User;
 
 /**
- * EngineeringController implements the CRUD actions for Engineering model.
+ * EngineerController implements the CRUD actions for Engineer model.
  */
 class EngineeringController extends Controller
 {
@@ -23,11 +27,25 @@ class EngineeringController extends Controller
                     'delete' => ['post'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['create','admin','update','delete'],
+                'rules' => [
+                    [
+                        'actions' => ['create','admin','update','delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return User::isAdmin();
+                        }
+                    ],
+                ],
+            ],
         ];
     }
 
     /**
-     * Lists all Engineering models.
+     * Lists all Engineer models.
      * @return mixed
      */
     public function actionIndex()
@@ -42,19 +60,26 @@ class EngineeringController extends Controller
     }
 
     /**
-     * Displays a single Engineering model.
+     * Displays a single Engineer model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Track::find()->where(['model_id'=>$id,'model_type'=>'engineering']),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider'=>$dataProvider,
         ]);
     }
 
     /**
-     * Creates a new Engineering model.
+     * Creates a new Engineer model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
@@ -72,7 +97,7 @@ class EngineeringController extends Controller
     }
 
     /**
-     * Updates an existing Engineering model.
+     * Updates an existing Engineer model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -91,7 +116,7 @@ class EngineeringController extends Controller
     }
 
     /**
-     * Deletes an existing Engineering model.
+     * Deletes an existing Engineer model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -104,7 +129,7 @@ class EngineeringController extends Controller
     }
 
     /**
-     * Finds the Engineering model based on its primary key value.
+     * Finds the Engineer model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
      * @return Engineering the loaded model

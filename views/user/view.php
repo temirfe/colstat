@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 
@@ -85,6 +86,19 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                     ],
                     'scholarship_award',
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'headerOptions' => ['width' => '67'],
+                        'visible'=> function($model) {
+                            if($model->user_id==Yii::$app->user->id) $avisible=true; else $avisible=false;
+                            return $avisible;
+                        },
+                        'urlCreator' => function ($action, $model, $key, $index) {
+                            $table=$model->model_type; if($model->model_type=='undergraduate') $table='university';
+                            $name=Yii::$app->db->createCommand("SELECT name FROM {$table} WHERE id='{$model->model_id}'")->queryScalar();
+                            return Url::toRoute(['/track/'.$action, 'id' => $model->id,'name'=>$name]);
+                        }
+                    ],
                 ],
             ]); ?>
         </div>

@@ -9,11 +9,16 @@ use yii\grid\GridView;
 
 $this->title = 'Optometry Schools';
 $this->params['breadcrumbs'][] = $this->title;
+if(!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin())
+{
+    $avisible=true;
+    $create="<div class='pull-right'>".Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"
+        title="'.Yii::t('app', 'Add new').'"></span>', ['create'], ['class' => 'btn btn-success btn-sm'])."</div>";
+}
+else {$avisible=false; $create='';}
 ?>
 <div class="optometry-index">
-    <div class="pull-right">
-        <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true" title="'.Yii::t('app', 'Add new').'"></span>', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
-    </div>
+    <?=$create;?>
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <?= GridView::widget([
@@ -45,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'out_state_amnt',
             // 'prereqs:ntext',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn', 'headerOptions' => ['width' => '67'],'visible'=>$avisible],
         ],
     ]); ?>
 

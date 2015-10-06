@@ -8,11 +8,12 @@ $db=Yii::$app->db;
 $announcements =$db->createCommand("SELECT id,title,description FROM announcements ORDER BY id DESC LIMIT 3")->queryAll();
 $this->title = 'College statistics';
 
-$sliderModels = [
+$sliderModels2 = [
     0=>['image'=>'banner1.jpg', 'text'=>'College Statistics is your portal to transparency into the admissions process. Find information and statistics about schools you are interested in, and see where applicants similar to yourself have been admitted.'],
     1=>['image'=>'banner1.jpg', 'text'=>'College Statistics is your portal to transparency into the admissions process. Find information and statistics about schools you are interested in, and see where applicants similar to yourself have been admitted.'],
     2=>['image'=>'banner1.jpg', 'text'=>'College Statistics is your portal to transparency into the admissions process. Find information and statistics about schools you are interested in, and see where applicants similar to yourself have been admitted.'],
-]
+];
+$sliderModels=$db->createCommand("SELECT * FROM slider ORDER BY id DESC")->queryAll();
 ?>
 <style type="text/css">
     .container {
@@ -30,7 +31,6 @@ $sliderModels = [
 
 </style>
 <div class="site-index">
-
     <div class="slider_container">
         <?php if (!empty($sliderModels)): ?>
             <ul class="bxslider">
@@ -39,12 +39,11 @@ $sliderModels = [
                     <?php $i++ ?>
                     <li>
                         <img id="image_<?=$i?>" class="images" src="/images/slider/<?= $slider['image'] ?>" />
-
-                        <div class="slider_text_container">
-                            <?php if (!empty($slider['text'])): ?>
-                                <div class="slider_title"><?= $slider['text'] ?></div>
-                            <?php endif; ?>
+                        <?php if (!empty($slider['caption'])): ?>
+                        <div class="slider_text_container js_caption">
+                                <div class="slider_title"><?= $slider['caption'] ?></div>
                         </div>
+                        <?php endif; ?>
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -163,8 +162,16 @@ $sliderModels = [
     $(document).ready(function(){
         $('.bxslider').bxSlider({
             auto: false,
-            speed: 1000,
-            autoHover: true
+            pause:8000,
+            autoHover: true,
+            onSlideBefore: function(){
+                // do mind-blowing JS stuff here
+                $('.js_caption').css({'transform':'translate(100px,0)','opacity':'0'});
+            },
+            onSlideAfter: function(){
+                // do mind-blowing JS stuff here
+                $('.js_caption').css({'transform':'translate(0,0)','opacity':'1'});
+            }
         });
 
         $('nav').css('overflow', 'visible');
