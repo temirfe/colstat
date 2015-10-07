@@ -17,6 +17,8 @@ use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\UploadedFile;
 use app\models\User;
+use yii\web\Response;
+use yii\web\HttpException;
 
 class SiteController extends Controller
 {
@@ -717,6 +719,52 @@ class SiteController extends Controller
         $this->render('twitter/twiauth');
     }
 
+    public function actionSaveToCompare()
+    {
+        $session = Yii::$app->session;
+        if (!$session->isActive) $session->open();
+
+        if(isset($_POST['id']) && isset($_POST['controller']))
+        {
+            $id = (int)$_POST['id'];
+            $controller=$_POST['controller'];
+
+            if (isset($_SESSION['compare'][$controller])) {
+                if(in_array($id,$_SESSION['compare'][$controller]))
+                {
+                    //remove
+                    if(($key = array_search($id, $_SESSION['compare'][$controller])) !== false) {
+                        unset($_SESSION['compare'][$controller][$key]);
+                    }
+                }
+                else
+                {
+                    //add if there are less than 4
+                    if(count($_SESSION['compare'][$controller])<4) $_SESSION['compare'][$controller][] = $id;
+                }
+            }
+            else
+            {
+                //add
+                $_SESSION['compare'][$controller][] = $id;
+            }
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return count($_SESSION['compare'][$controller]);
+        }
+        elseif(isset($_POST['cancel']))
+        {
+            $controller=$_POST['cancel'];
+
+            if (isset($_SESSION['compare'][$controller])) {
+                unset($_SESSION['compare'][$controller]);
+            }
+            return true;
+        }
+        else
+        {
+            throw new HttpException(401);
+        }
+    }
     public function actionRun2(){
         $user=User::findOne(2);
         Yii::$app->mailer->compose('emailConfirm', ['user' => $user])

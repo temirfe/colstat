@@ -146,4 +146,23 @@ class UndergraduateController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionCompare()
+    {
+        $session = Yii::$app->session;
+        if (!$session->isActive) $session->open();
+        $ids=[];
+        foreach($_SESSION['compare']['undergraduate'] as $row)
+        {
+            $ids[]=$row;
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => Undergraduate::find()->where(['id' => $ids])
+        ]);
+
+        $this->view->title = 'Compare Schools | '.Yii::$app->name;
+        return $this->render('compare', ['dataProvider' => $dataProvider]);
+
+    }
 }

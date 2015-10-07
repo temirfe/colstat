@@ -25,7 +25,10 @@ AppAsset::register($this);
     <body>
     <?php $this->beginBody() ?>
     <?php
-    $yiiuser=Yii::$app->user;
+    if(!isset($yapp)) $yapp=Yii::$app;
+    if(!isset($yiiuser)) $yiiuser=$yapp->user;
+    if(!isset($controller)) $controller=$yapp->controller->id;
+    if(!isset($action)) $action=$yapp->controller->action->id;
     ?>
     <div class="wrap">
         <?php
@@ -132,8 +135,8 @@ AppAsset::register($this);
                 <?= $content ?>
                 <?php
                 $com_models=['undergraduate','medical','business','physical','dental','engineering','law','nursing','occupational','optometry','pharmacy','user'];
-                $model_type=Yii::$app->controller->id;
-                $model_action=Yii::$app->controller->action->id;
+                $model_type=$controller;
+                $model_action=$action;
                 if(in_array($model_type,$com_models) && $model_action=='view'){
 
                     $model_id=Yii::$app->request->get('id');
@@ -197,13 +200,80 @@ AppAsset::register($this);
     </footer>
     <?php
         include_once('_search.php');
+        if (isset($_SESSION['compare']) && isset($_SESSION['compare'][$controller]) && $action=='index')
+        {
+            $compare_hidden='';
+            $comp_count=count($_SESSION['compare'][$controller]);
+        }
+        else{$compare_hidden='hidden';$comp_count='0';}
     ?>
+    <div class="js_compare_modal compare_modal fixed <?=$compare_hidden;?>">
+        <span class="js_compare_count" style="font-weight:bold;"><?=$comp_count;?></span> schools selected
+        <div class="js_compare_button compare_button">Compare</div>
+        <div class="js_compare_cancel compare_cancel">cancel</div>
+    </div>
+    <div class="hidden js_controller_name"><?=$controller;?></div>
     <?php $this->registerCssFile('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css');?>
     <?php $this->registerCssFile('/css/social-buttons.css');?>
     <?php $this->registerJsFile('/js/social-buttons.js');?>
     <script type="text/javascript">
         window.onload=function(){
             $('.js_search').click(function(e){e.preventDefault();});
+            var controller=$('.js_controller_name').text();
+            $(document).on('click','.js_compare_init',function(){
+                $('.table-striped').addClass('table-hover js_table_compare');
+                $('.js_compare_modal').removeClass('hidden').show();
+                $(this).addClass('hidden');
+                $('.js_select_below').removeClass('hidden');
+            });
+            $(document).on('click','.js_compare_cancel',function(){
+
+                $.ajax({
+                    url: "/site/save-to-compare",
+                    datatype: "JSON",
+                    type: "POST",
+                    data: {cancel:controller},
+                    cache: false,
+                    success: function(){
+                        $('.table-striped').removeClass('table-hover js_table_compare');
+                        $('.js_compare_count').text('0');
+                        $('.js_compare_modal').hide();
+                        $('.js_compare_init').removeClass('hidden');
+                        $('.js_select_below').addClass('hidden');
+                        $('tr').removeClass('selected');
+                    }
+                });
+            });
+            $(document).on('click','.js_table_compare tbody a',function(e){e.preventDefault();});
+            $(document).on('click','.js_table_compare tbody tr',function(){
+                var counter=$('.js_compare_count');
+                if($(this).hasClass('selected')){$(this).removeClass('selected');}
+                else
+                {
+                    if(counter.text()=='4'){alert("You cannot select more than 4 schools");}
+                    else $(this).addClass('selected');
+                }
+                var id=$(this).attr('data-key');
+                var controller=$('.js_controller_name').text();
+                $.ajax({
+                    url: "/site/save-to-compare",
+                    datatype: "JSON",
+                    type: "POST",
+                    data: {id: id, controller:controller},
+                    cache: false,
+                    success: function(count){
+                        counter.text(count);
+                    }
+                });
+            });
+
+            $(document).on('click','.js_compare_button ',function(){
+                var count=$('.js_compare_count').text();
+                if(parseInt(count)<2 || parseInt(count)>4){alert('Please select between 2 and 4 schools');}
+                else{
+                    window.location='/'+controller+'/compare'
+                }
+            });
         };
     </script>
 

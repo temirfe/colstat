@@ -9,6 +9,7 @@ use yii\grid\GridView;
 
 $this->title = 'Undergraduate Schools';
 $this->params['breadcrumbs'][] = $this->title;
+if(!isset($controller)) $controller=Yii::$app->controller->id;
 if(!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin())
 {
     $avisible=true;
@@ -16,15 +17,38 @@ if(!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin())
         title="'.Yii::t('app', 'Add new').'"></span>', ['create'], ['class' => 'btn btn-success btn-sm'])."</div>";
 }
 else {$avisible=false; $create='';}
+var_dump($_SESSION);
+if (isset($_SESSION['compare']) && isset($_SESSION['compare']['undergraduate']))
+{
+    $compare_init_hidden='hidden';
+    $compare_select_hidden='';
+}
+else{$compare_init_hidden='';
+    $compare_select_hidden='hidden';}
 ?>
 <div class="undergraduate-index">
     <?=$create;?>
     <h1><?= Html::encode($this->title) ?></h1>
+    <div class="js_compare_init compare_init <?=$compare_init_hidden;?>">Compare Schools</div>
+    <div class="js_select_below compare_select_below <?=$compare_select_hidden;?>"><span class="glyphicon glyphicon-arrow-down"></span> Select schools below to compare</div>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
+    <?php
+    if (isset($_SESSION['compare']) && isset($_SESSION['compare'][$controller]))
+    {
+        $compare_class='table-hover js_table_compare';
+    }
+    else{$compare_class='';}
+    echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'tableOptions'=>['class' => 'table table-striped table-bordered '.$compare_class],
+        'rowOptions'=>function ($model, $key, $index, $grid){
+            $class='';
+            if(isset($_SESSION['compare'][Yii::$app->controller->id]) && in_array($key,$_SESSION['compare'][Yii::$app->controller->id]))
+                $class='selected';
+            return array('class'=>$class);
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [

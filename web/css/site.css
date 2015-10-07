@@ -414,3 +414,50 @@ h1, .h1 {
 
 a.an-title:hover{text-decoration: none;}
 .site-index{background-color: #fff;overflow: hidden;}
+.compare_item td{  height: 58px;
+    text-align: center;
+    vertical-align: middle !important;}
+.compare_item th{vertical-align: middle !important;}
+.compare_init{
+    color: #44afc6;
+    float: right;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: -31px;
+}
+.compare_init:hover{
+    text-decoration: underline;
+    cursor: pointer;}
+.js_table_compare tbody a{color:#333; text-decoration: none;}
+.js_table_compare tbody tr.selected{background-color: #ffeba0 !important;}
+.compare_modal{
+    background-color: rgba(68, 175, 199, 0.8);
+    color: #fff;
+    font-size: 12px;
+    padding: 10px 15px;
+    right: 20px;
+    text-align: center;
+    top: 20px;
+}
+.compare_button{
+    background-color: #3291a5;
+    border-radius: 4px;
+    color: white;
+    margin: 9px 0 4px;
+    padding: 4px 0;
+    cursor: pointer;
+}
+.compare_button:hover{
+    background-color: #2a7a8b;
+}
+.compare_cancel{color: #eaeaea;}
+.compare_cancel:hover{color: #fff; text-decoration: underline; cursor:pointer;}
+.fixed{position: fixed;}
+.compare_select_below{
+    background-color: #5dca9d;
+    color: #fff;
+    float: right;
+    font-weight: bold;
+    margin-top: -38px;
+    padding: 5px 10px;
+}
