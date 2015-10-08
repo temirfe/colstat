@@ -28,12 +28,8 @@ else {$avisible=false; $create='';}
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'title',
-            'slug',
-            'meta_title',
             // 'meta_description',
             // 'parent',
             // 'updated_at',

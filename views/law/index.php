@@ -16,17 +16,13 @@ if(!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin())
         title="'.Yii::t('app', 'Add new').'"></span>', ['create'], ['class' => 'btn btn-success btn-sm'])."</div>";
 }
 else {$avisible=false; $create='';}
-
 ?>
+<?=$create;?>
 <div class="law-index">
-    <?=$create;?>
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
+    <?php $columns = [
             ['class' => 'yii\grid\SerialColumn'],
 
             [
@@ -84,7 +80,9 @@ else {$avisible=false; $create='';}
             // 'grant_per_25',
 
             ['class' => 'yii\grid\ActionColumn', 'headerOptions' => ['width' => '67'],'visible'=>$avisible],
-        ],
-    ]); ?>
-
+        ]; ?>
+    <?php
+    if(!isset($controller)) $controller=Yii::$app->controller->id;
+    include_once('/../layouts/_indexGrid.php');
+    ?>
 </div>

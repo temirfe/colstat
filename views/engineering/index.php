@@ -17,65 +17,64 @@ if(!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin())
 }
 else {$avisible=false; $create='';}
 ?>
+<?=$create;?>
 <div class="engineering-index">
-    <?=$create;?>
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            [
-                'attribute' => 'name',
-                'format' => 'raw',
-                'value' => function($model) {
-                    return Html::a($model->name, ['engineering/view','id'=>$model->id]);
-                },
-            ],
-            'city',
-            'state',
-            // 'zip',
-            // 'phone',
-            // 'fax',
-            // 'url:url',
-            // 'president',
-            // 'about:ntext',
-            // 'url_fin_aid:url',
-            // 'url_admissions:url',
-            // 'url_apply:url',
-            // 'grad_rate_men',
-            // 'grad_rate_women',
-            // 'apply_fee',
-            // 'pct_adm_ttl',
-            // 'pct_adm_men',
-            // 'pct_adm_wmen',
-            // 'pct_fullfirst_any_finaid',
-            // 'avg_fullfirst_loan',
-            // 'pct_fullfirst_loan',
-            // 'avg_fullfirst_oloan',
-            // 'appl_ttl',
-            // 'appl_men',
-            // 'appl_wmen',
-            // 'adm_ttl',
-            // 'adm_men',
-            // 'adm_wmen',
-            // 'tuition_in',
-            // 'tuition_out',
-            // 'grad_enr',
-            // 'avg_gmat',
-            // 'ft_grad_empl_grad',
-            // 'avg_start_sal',
-            // 'avg_ugrad_gpa',
-            // 'ft_grad_empl_3month',
-            'campus_set',
-            'stud_popul',
-            'campus_house',
-            'grad_rate',
-
-            ['class' => 'yii\grid\ActionColumn', 'headerOptions' => ['width' => '67'],'visible'=>$avisible],
+    <?php $columns=[
+        ['class' => 'yii\grid\SerialColumn'],
+        [
+            'attribute' => 'name',
+            'format' => 'raw',
+            'value' => function($model) {
+                return Html::a($model->name, ['engineering/view','id'=>$model->id]);
+            },
         ],
-    ]); ?>
+        'city',
+        'state',
+        // 'zip',
+        // 'phone',
+        // 'fax',
+        // 'url:url',
+        // 'president',
+        // 'about:ntext',
+        // 'url_fin_aid:url',
+        // 'url_admissions:url',
+        // 'url_apply:url',
+        // 'grad_rate_men',
+        // 'grad_rate_women',
+        // 'apply_fee',
+        // 'pct_adm_ttl',
+        // 'pct_adm_men',
+        // 'pct_adm_wmen',
+        // 'pct_fullfirst_any_finaid',
+        // 'avg_fullfirst_loan',
+        // 'pct_fullfirst_loan',
+        // 'avg_fullfirst_oloan',
+        // 'appl_ttl',
+        // 'appl_men',
+        // 'appl_wmen',
+        // 'adm_ttl',
+        // 'adm_men',
+        // 'adm_wmen',
+        // 'tuition_in',
+        // 'tuition_out',
+        // 'grad_enr',
+        // 'avg_gmat',
+        // 'ft_grad_empl_grad',
+        // 'avg_start_sal',
+        // 'avg_ugrad_gpa',
+        // 'ft_grad_empl_3month',
+        'campus_set',
+        'stud_popul',
+        'campus_house',
+        'grad_rate',
 
+        ['class' => 'yii\grid\ActionColumn', 'headerOptions' => ['width' => '67'],'visible'=>$avisible],
+    ]; ?>
+    <?php
+    if(!isset($controller)) $controller=Yii::$app->controller->id;
+    include_once('/../layouts/_indexGrid.php');
+    ?>
 </div>

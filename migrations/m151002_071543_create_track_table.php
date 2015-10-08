@@ -5,7 +5,7 @@ use yii\db\Migration;
 
 class m151002_071543_create_track_table extends Migration
 {
-    public function up()
+   /* public function up()
     {
         $this->createTable('track', [
             'id' => $this->primaryKey(),
@@ -27,7 +27,7 @@ class m151002_071543_create_track_table extends Migration
         $this->createIndex('idx_track_model_id', 'track', 'model_id');
         $this->createIndex('idx_track_model_type', 'track', 'model_type');
         $this->createIndex('idx_track_user_id', 'track', 'user_id');
-    }
+    }*/
 
     public function down()
     {

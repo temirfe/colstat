@@ -5,7 +5,7 @@ use yii\db\Migration;
 
 class m151002_052742_create_comment_table extends Migration
 {
-    public function up()
+   /* public function up()
     {
         $this->createTable('comment', [
             'id' => $this->primaryKey(),
@@ -18,7 +18,7 @@ class m151002_052742_create_comment_table extends Migration
 
         $this->createIndex('idx_comment_model_id', 'comment', 'model_id');
         $this->createIndex('idx_comment_user_id', 'comment', 'user_id');
-    }
+    }*/
 
     public function down()
     {

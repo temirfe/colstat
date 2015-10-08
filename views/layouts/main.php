@@ -35,7 +35,6 @@ AppAsset::register($this);
             if (!$yiiuser->isGuest) {
                 $username=$yiiuser->identity->username;
                 $userid=$yiiuser->identity->id;
-                if($yiiuser->identity->isAdmin()) $upload=['label' => 'Upload', 'url' => ['/site/upload']]; else $upload='';
                 $logout=[
                     'label' => $username,
                     'options'=>['class'=>'dropdown'],
@@ -43,7 +42,6 @@ AppAsset::register($this);
                     'template' => '<a href="{url}" class="dropdown-toggle" data-toggle="dropdown">{label}<b class="caret"></b></a>',
                     'items' => [
                         ['label' => 'Profile', 'url' => ['/user/view','id'=>$userid]],
-                        $upload,
                         ['label' => 'Logout', 'url' => ['/site/logout'], 'template' => '<a href="{url}" data-method="post">{label}</a>',],
                     ]
                 ];
@@ -198,6 +196,41 @@ AppAsset::register($this);
             <p class="pull-left">&copy; <?= date('Y') ?> COLLEGE STATISTICS </p>
         </div>
     </footer>
+    <?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()){
+        ?>
+        <section>
+            <div class="admin-panel js_panel">
+                <span class='adminicon glyphicon glyphicon-option-vertical js_panel_toggle' style='padding-left:13px;'></span>
+                <ul>
+                    <li>
+                        <?=Html::a("<span class='adminicon glyphicon glyphicon-open-file'></span>".Yii::t('app','Upload Excel'), ['/site/upload'],
+                            ['title'=>Yii::t('app','Upload'),'data-toggle'=>'tooltip','data-placement'=>'left']);?>
+                    </li>
+                    <li>
+                        <?=Html::a("<span class='adminicon glyphicon glyphicon-duplicate'></span>".Yii::t('app','Pages'), ['/page/index'],
+                            ['title'=>Yii::t('app','Pages'),'data-toggle'=>'tooltip','data-placement'=>'left']);?>
+                    </li>
+                    <li>
+                        <?=Html::a("<span class='adminicon glyphicon glyphicon-bullhorn'></span>".Yii::t('app','Announcements'), ['/announcement/index'],
+                            ['title'=>Yii::t('app','Announcements'),'data-toggle'=>'tooltip','data-placement'=>'left']);?>
+                    </li>
+                    <li>
+                        <?=Html::a("<span class='adminicon glyphicon glyphicon-user'></span>".Yii::t('app','Users'), ['/user/index'],
+                            ['title'=>Yii::t('app','Users'),'data-toggle'=>'tooltip','data-placement'=>'left']);?>
+                    </li>
+                    <li>
+                        <?=Html::a("<span class='adminicon glyphicon glyphicon-envelope'></span>".Yii::t('app','Contacts'), ['/contact/index'],
+                            ['title'=>Yii::t('app','Contacts '),'data-toggle'=>'tooltip','data-placement'=>'left']);?>
+                    </li>
+                    <li>
+                        <?=Html::a("<span class='adminicon glyphicon glyphicon-picture'></span>".Yii::t('app','Slides '), ['/slider/index'],
+                            ['title'=>Yii::t('app','Slides'),'data-toggle'=>'tooltip','data-placement'=>'left']);?>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    <?php
+    }?>
     <?php
         include_once('_search.php');
         if (isset($_SESSION['compare']) && isset($_SESSION['compare'][$controller]) && $action=='index')
@@ -271,9 +304,25 @@ AppAsset::register($this);
                 var count=$('.js_compare_count').text();
                 if(parseInt(count)<2 || parseInt(count)>4){alert('Please select between 2 and 4 schools');}
                 else{
-                    window.location='/'+controller+'/compare'
+                    window.location='/common/compare?m='+controller;
                 }
             });
+
+            var panel=$('.js_panel');
+            $(document).on('click','.js_panel_toggle',function () {
+                if(panel.hasClass('panel-opened')) //if open do close
+                {
+                    panel.removeClass('panel-opened tooltiphide');
+                    $(this).addClass('glyphicon-option-vertical').removeClass('glyphicon-option-horizontal');
+                }
+                else //if closed do open
+                {
+                    panel.addClass('panel-opened tooltiphide');
+                    $(this).removeClass('glyphicon-option-vertical').addClass('glyphicon-option-horizontal');
+                }
+            });
+
+            $("[data-toggle='tooltip']").tooltip();
         };
     </script>
 

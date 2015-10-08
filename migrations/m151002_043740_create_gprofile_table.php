@@ -5,7 +5,7 @@ use yii\db\Migration;
 
 class m151002_043740_create_gprofile_table extends Migration
 {
-    public function up()
+   /* public function up()
     {
         $this->createTable('gprofile', [
             'id' => $this->primaryKey(),
@@ -28,7 +28,7 @@ class m151002_043740_create_gprofile_table extends Migration
         ]);
 
         $this->createIndex('idx_gprofile_user_id', 'gprofile', 'user_id');
-    }
+    }*/
 
     public function down()
     {

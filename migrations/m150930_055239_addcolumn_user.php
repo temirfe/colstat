@@ -8,14 +8,14 @@ class m150930_055239_addcolumn_user extends Migration
     public $tableName='user';
     public function up()
     {
-        $this->addColumn($this->tableName,'name','varchar(100) NOT NULL');
+        /*$this->addColumn($this->tableName,'name','varchar(100) NOT NULL');
         $this->addColumn($this->tableName,'city','varchar(100) NOT NULL');
         $this->addColumn($this->tableName,'state','varchar(100) NOT NULL');
         $this->addColumn($this->tableName,'hear','varchar(500) NOT NULL');
         $this->addColumn($this->tableName,'fb_id','varchar(30) NOT NULL');
         $this->addColumn($this->tableName,'twi_id','varchar(30) NOT NULL');
         $this->addColumn($this->tableName,'google_id','varchar(30) NOT NULL');
-        $this->addColumn($this->tableName,'lastvisit','integer(20) NOT NULL');
+        $this->addColumn($this->tableName,'lastvisit','integer(20) NOT NULL');*/
     }
 
     public function down()

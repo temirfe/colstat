@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use app\models\Contact;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Page */
@@ -28,6 +29,12 @@ $this->params['breadcrumbs']=$breadcrumbs;
     <div class="row">
         <div class="col-md-9">
             <?=$model->content; ?>
+            <?php
+                if($model->id==27){
+                    $cmodel=new Contact();
+                    echo $this->render('/contact/_form.php',['model'=>$cmodel]);
+                }
+            ?>
         </div>
         <div class="col-md-3">
             <?php if($children){

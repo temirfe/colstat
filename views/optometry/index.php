@@ -17,41 +17,40 @@ if(!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin())
 }
 else {$avisible=false; $create='';}
 ?>
+<?=$create;?>
 <div class="optometry-index">
-    <?=$create;?>
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            [
-                'attribute' => 'name',
-                'format' => 'raw',
-                'value' => function($model) {
-                    return Html::a($model->name, ['optometry/view','id'=>$model->id]);
-                },
-            ],
-            //'city',
-            'state',
-            //'address',
-            // 'url:url',
-            // 'about:ntext',
-            // 'class_size',
-            // 'matricul_female',
-            // 'matricul_male',
-            // 'matricul_total',
-             'average_gpa',
-             'aa1_avg_oat',
-             'ts2_avg_oat',
-            // 'pct_ba_deg',
-            // 'in_state_amnt',
-            // 'out_state_amnt',
-            // 'prereqs:ntext',
-
-            ['class' => 'yii\grid\ActionColumn', 'headerOptions' => ['width' => '67'],'visible'=>$avisible],
+    <?php $columns=[
+        ['class' => 'yii\grid\SerialColumn'],
+        [
+            'attribute' => 'name',
+            'format' => 'raw',
+            'value' => function($model) {
+                return Html::a($model->name, ['optometry/view','id'=>$model->id]);
+            },
         ],
-    ]); ?>
+        //'city',
+        'state',
+        //'address',
+        // 'url:url',
+        // 'about:ntext',
+        // 'class_size',
+        // 'matricul_female',
+        // 'matricul_male',
+        // 'matricul_total',
+        'average_gpa',
+        'aa1_avg_oat',
+        'ts2_avg_oat',
+        // 'pct_ba_deg',
+        // 'in_state_amnt',
+        // 'out_state_amnt',
+        // 'prereqs:ntext',
 
+        ['class' => 'yii\grid\ActionColumn', 'headerOptions' => ['width' => '67'],'visible'=>$avisible],
+    ]; ?>
+    <?php
+    if(!isset($controller)) $controller=Yii::$app->controller->id;
+    include_once('/../layouts/_indexGrid.php');
+    ?>
 </div>

@@ -5,7 +5,7 @@ use yii\db\Migration;
 
 class m151001_102736_create_profile_table extends Migration
 {
-    public function up()
+    /*public function up()
     {
          $this->createTable('profile', [
              'id' => $this->primaryKey(),
@@ -31,7 +31,7 @@ class m151001_102736_create_profile_table extends Migration
          ]);
 
          $this->createIndex('idx_profile_user_id', 'profile', 'user_id');
-    }
+    }*/
 
     public function down()
     {

@@ -53,10 +53,12 @@ class SliderController extends Controller
     {
         $searchModel = new SliderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $lol=[5,7];
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'lol'=>$lol
         ]);
     }
 
@@ -87,10 +89,7 @@ class SliderController extends Controller
                 $imageName=time(). '.' . $model->imageFile->extension;
                 $model->imageFile->saveAs('images/slider/' . $imageName);
                 $model->image=$imageName;
-
-                /*$imagine=Image::getImagine()->open('images/slider/'.$imageName);
-                $imagine->thumbnail(new Box(1170, 500))->save('images/slider/'.$imageName);
-                $imagine->thumbnail(new Box(120, 100))->save('images/slider/s_'.$imageName, ['quality' => 90]);*/
+                $this->resize($imageName);
             }
             $model->save(false);
             return $this->redirect(['view', 'id' => $model->id]);
@@ -118,10 +117,7 @@ class SliderController extends Controller
                 $imageName=time(). '.' . $model->imageFile->extension;
                 $model->imageFile->saveAs('images/slider/' . $imageName);
                 $model->image=$imageName;
-
-                $imagine=Image::getImagine()->open('images/slider/'.$imageName);
-                $imagine->thumbnail(new Box(1170, 500))->save('images/slider/'.$imageName);
-                $imagine->thumbnail(new Box(120, 100))->save('images/slider/s_'.$imageName, ['quality' => 90]);
+                $this->resize($imageName);
             }
             $model->save(false);
             return $this->redirect(['view', 'id' => $model->id]);
@@ -130,6 +126,18 @@ class SliderController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    protected function resize($imageName){
+        $webroot=Yii::getAlias('@webroot');
+        $imagine=Image::getImagine()->open('images/slider/'.$imageName);
+        $imagine->thumbnail(new Box(1170, 2000))->save($webroot.'/images/slider/'.$imageName);
+
+        $imagine=Image::getImagine()->open('images/slider/'.$imageName);
+        $height=$imagine->getSize()->getHeight();
+        if($height>500) $cHeight=($height-500)/1.3; else $cHeight=0;
+        Image::crop($webroot.'/images/slider/'.$imageName,1170,500,[0,$cHeight])->save($webroot.'/images/slider/'.$imageName);
+        $imagine->thumbnail(new Box(180, 100))->save($webroot.'/images/slider/s_'.$imageName, ['quality' => 90]);
     }
 
     /**

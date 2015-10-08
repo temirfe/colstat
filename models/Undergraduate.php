@@ -114,7 +114,7 @@ class Undergraduate extends \yii\db\ActiveRecord
             'grad_rate' => 'Graduation Rate',
             'grad_rate_men' => 'Graduation Rate Men',
             'grad_rate_women' => 'Graduation Rate Women',
-            'apply_fee' => 'Apply Fee',
+            'apply_fee' => 'Application Fee',
             'pct_adm_ttl' => 'Acceptance Rate',
             'pct_adm_men' => 'Percent Admitted (Men)',
             'pct_adm_wmen' => 'Percent Admitted (Women)',

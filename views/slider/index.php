@@ -27,10 +27,14 @@ else {$avisible=false; $create='';}
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'caption',
-            'image',
+            [
+                'attribute' => 'image',
+                'format' => 'raw',
+                'value' => function($model) {
+                    return Html::img('/images/slider/s_'.$model->image);
+                },
+            ],
 
             ['class' => 'yii\grid\ActionColumn', 'headerOptions' => ['width' => '67'],'visible'=>$avisible],
         ],
