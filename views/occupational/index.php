@@ -47,6 +47,6 @@ else {$avisible=false; $create='';}
     ];?>
     <?php
     if(!isset($controller)) $controller=Yii::$app->controller->id;
-    include_once('/../layouts/_indexGrid.php');
+    include_once(__DIR__ .'/../layouts/_indexGrid.php');
     ?>
 </div>
