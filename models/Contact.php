@@ -56,16 +56,10 @@ class Contact extends \yii\db\ActiveRecord
 
     public function contact($email)
     {
-        if ($this->validate()) {
-            Yii::$app->mailer->compose()
-                ->setTo($email)
-                ->setFrom([$this->email => $this->name])
-                ->setSubject($this->subject)
-                ->setTextBody($this->body)
-                ->send();
-
-            return true;
-        }
-        return false;
+        Yii::$app->mailer->compose('contactEmail',['user'=>$this])
+            ->setTo($email)
+            ->setFrom([Yii::$app->params['supportEmail'] => 'CollegeStatistics.org'])
+            ->setSubject('User sent a feedback on website')
+            ->send();
     }
 }

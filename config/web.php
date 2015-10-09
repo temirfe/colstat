@@ -67,6 +67,7 @@ $config = [
                 'graduate-schools/optometry-schools' => 'optometry',
                 'graduate-schools/engineering-schools' => 'engineering',
                 'graduate-schools/business-schools' => 'business',
+                'documentation' => 'page/28',
             ),
         ],
         'assetManager' => [

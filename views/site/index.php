@@ -36,9 +36,9 @@ $sliderModels = $db->cache(function ($db) {
                     <li>
                         <img id="image_<?=$i?>" class="images" src="/images/slider/<?= $slider['image'] ?>" />
                         <?php if (!empty($slider['caption'])): ?>
-                        <div class="slider_text_container js_caption">
+                            <div class="slider_text_container js_caption">
                                 <div class="slider_title"><?= $slider['caption'] ?></div>
-                        </div>
+                            </div>
                         <?php endif; ?>
                     </li>
                 <?php endforeach; ?>
@@ -90,9 +90,9 @@ $sliderModels = $db->cache(function ($db) {
     </div>
     <div class="col-md-4 trio">
         <?php $br="<br /><br />"; ?>
-    <?php if (!Yii::$app->user->identity): ?>
-        <?php $br="<br />"; ?>
-        <div class="box white">
+        <?php if (!Yii::$app->user->identity): ?>
+            <?php $br="<br />"; ?>
+            <div class="box white">
                 <h3>Login / Register </h3>
                 <?php $form = ActiveForm::begin([
                     'id' => 'login-form',
@@ -131,8 +131,8 @@ $sliderModels = $db->cache(function ($db) {
                         </a>
                     </div>
                 </div>
-        </div>
-    <?php endif; ?>
+            </div>
+        <?php endif; ?>
         <div class="box white text1">
             <h3>Test Prep </h3>
             <p>For most universities, standardized test scores are heavily weighted while evaluating a student’s candidacy for admission.

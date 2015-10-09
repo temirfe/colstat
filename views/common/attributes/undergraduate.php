@@ -99,7 +99,7 @@ $attributes=[
     [
         'attribute' => 'pct_fullfirst_loan',
         'label' => 'Percent of full-time first-time undergraduates receiving student loan aid',
-        'value' => ($model->pct_fullfirst_loan*100)."%"
+        'value' => ($model['pct_fullfirst_loan']*100)."%"
     ],
     [
         'attribute' => 'avg_fullfirst_oloan',

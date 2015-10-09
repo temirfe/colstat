@@ -75,7 +75,7 @@ class PageController extends Controller
         $result = ArrayHelper::index($pages, 'id');
         $bcumb=array();
         function buildCrumb($id,$result,$bcumb){
-            if($result[$id]){
+            if(isset($result[$id]) && $result[$id]){
                 $bcumb[$result[$id]['id']] = ['label' => $result[$id]['title'], 'url' => [$result[$id]['slug'].'/'.$result[$id]['id']]];
                 $next_id=$result[$id]['parent'];
                 return buildCrumb($next_id,$result,$bcumb);
