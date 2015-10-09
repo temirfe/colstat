@@ -7,13 +7,9 @@ use yii\helpers\Html;
 $db=Yii::$app->db;
 $announcements =$db->createCommand("SELECT id,title,description FROM announcements ORDER BY id DESC LIMIT 3")->queryAll();
 $this->title = 'College statistics';
-
-$sliderModels2 = [
-    0=>['image'=>'banner1.jpg', 'text'=>'College Statistics is your portal to transparency into the admissions process. Find information and statistics about schools you are interested in, and see where applicants similar to yourself have been admitted.'],
-    1=>['image'=>'banner1.jpg', 'text'=>'College Statistics is your portal to transparency into the admissions process. Find information and statistics about schools you are interested in, and see where applicants similar to yourself have been admitted.'],
-    2=>['image'=>'banner1.jpg', 'text'=>'College Statistics is your portal to transparency into the admissions process. Find information and statistics about schools you are interested in, and see where applicants similar to yourself have been admitted.'],
-];
-$sliderModels=$db->createCommand("SELECT * FROM slider ORDER BY id DESC")->queryAll();
+$sliderModels = $db->cache(function ($db) {
+    return $db->createCommand("SELECT * FROM slider ORDER BY id DESC")->queryAll();
+},300);
 ?>
 <style type="text/css">
     .container {
@@ -40,9 +36,9 @@ $sliderModels=$db->createCommand("SELECT * FROM slider ORDER BY id DESC")->query
                     <li>
                         <img id="image_<?=$i?>" class="images" src="/images/slider/<?= $slider['image'] ?>" />
                         <?php if (!empty($slider['caption'])): ?>
-                        <div class="slider_text_container js_caption">
+                            <div class="slider_text_container js_caption">
                                 <div class="slider_title"><?= $slider['caption'] ?></div>
-                        </div>
+                            </div>
                         <?php endif; ?>
                     </li>
                 <?php endforeach; ?>
@@ -94,9 +90,9 @@ $sliderModels=$db->createCommand("SELECT * FROM slider ORDER BY id DESC")->query
     </div>
     <div class="col-md-4 trio">
         <?php $br="<br /><br />"; ?>
-    <?php if (!Yii::$app->user->identity): ?>
-        <?php $br="<br />"; ?>
-        <div class="box white">
+        <?php if (!Yii::$app->user->identity): ?>
+            <?php $br="<br />"; ?>
+            <div class="box white">
                 <h3>Login / Register </h3>
                 <?php $form = ActiveForm::begin([
                     'id' => 'login-form',
@@ -135,8 +131,8 @@ $sliderModels=$db->createCommand("SELECT * FROM slider ORDER BY id DESC")->query
                         </a>
                     </div>
                 </div>
-        </div>
-    <?php endif; ?>
+            </div>
+        <?php endif; ?>
         <div class="box white text1">
             <h3>Test Prep </h3>
             <p>For most universities, standardized test scores are heavily weighted while evaluating a student’s candidacy for admission.
@@ -161,7 +157,7 @@ $sliderModels=$db->createCommand("SELECT * FROM slider ORDER BY id DESC")->query
 <script type="text/javascript">
     $(document).ready(function(){
         $('.bxslider').bxSlider({
-            auto: false,
+            auto: true,
             pause:8000,
             autoHover: true,
             onSlideBefore: function(){

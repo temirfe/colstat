@@ -8,7 +8,7 @@ if (isset($_SESSION['compare']) && isset($_SESSION['compare'][$controller]))
     $compare_init_hidden='hidden';
     $compare_select_hidden='';
 }
-else{$compare_class=''; $compare_select_hidden='hidden';}
+else{$compare_class=''; $compare_select_hidden='hidden'; $compare_init_hidden='';}
 ?>
 
 <div class="js_compare_init compare_init <?=$compare_init_hidden;?>">Compare Schools</div>

@@ -1,1 +1,2 @@
 [01-Oct-2015 07:11:12 UTC] PHP Fatal error:  Cannot redeclare class OAuthException in /home/collegestat15/public_html/yii/basic/views/site/twitter/OAuth.php on line 8
+[09-Oct-2015 05:06:45 UTC] PHP Fatal error:  Class 'yii\bootstrap\Html' not found in /home/collegestat15/public_html/yii/basic/vendor/yiisoft/yii2-bootstrap/NavBar.php on line 100
