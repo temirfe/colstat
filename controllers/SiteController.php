@@ -19,6 +19,7 @@ use yii\web\UploadedFile;
 use app\models\User;
 use yii\web\Response;
 use yii\web\HttpException;
+use yii\db\Query;
 
 class SiteController extends Controller
 {
@@ -711,12 +712,12 @@ class SiteController extends Controller
 
     public function actionTwilogin()
     {
-        $this->render('twitter/twilogin');
+        return $this->render('twitter/twilogin');
     }
 
     public function actionTwiauth()
     {
-        $this->render('twitter/twiauth');
+        return $this->render('twitter/twiauth');
     }
 
     public function actionSaveToCompare()
@@ -764,6 +765,23 @@ class SiteController extends Controller
         {
             throw new HttpException(401);
         }
+    }
+
+    public function actionSearch()
+    {
+        $results='';
+        if(isset($_POST['search']) && strlen($_POST['search'])>=3)
+        {
+            //$results=$pages||$news || $events ? array_merge($pages, $news, $events):null;
+
+            $query=new Query();
+            $page=$query->select(['id', 'title','content'])
+                ->from('pages')
+                ->where('title LIKE :search OR content LIKE :search', [':search' =>"%{$_POST['search']}%"])
+                ->all();
+            $results=$page;
+        }
+        return $this->render('search',['results'=>$results]);
     }
     public function actionRun2(){
         $user=User::findOne(2);
