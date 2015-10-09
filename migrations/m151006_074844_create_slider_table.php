@@ -17,7 +17,7 @@ class m151006_074844_create_slider_table extends Migration
     public function down()
     {
         $this->dropTable('slider');
-    }*/
+    }
 
     /*
     // Use safeUp/safeDown to run migration code within a transaction
