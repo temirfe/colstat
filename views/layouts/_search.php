@@ -11,7 +11,7 @@ Modal::begin([
     <?= Html::beginForm(['site/search'], 'post') ?>
         <div class="form-group col-md-10">
             <!--type, input name, input value, options-->
-            <?= Html::input('text', 'search', '', ['class' => 'form-control']) ?>
+            <?= Html::input('text', 'search', '', ['class' => 'form-control js_search_input']) ?>
         </div>
         <div class="form-group col-md-2">
             <?= Html::button('Search', ['class' => 'btn btn-primary', 'type'=>'submit']) ?>

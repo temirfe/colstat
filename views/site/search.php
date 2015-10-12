@@ -19,8 +19,8 @@ function word_limiter($string, $number_of_words)
         .search-result .title a{font-size: 17px;}
     </style>
 <?php
-if($results)
-    foreach($results as $result)
+if($page)
+    foreach($page as $result)
     {
         ?>
         <div class="search-result" >
@@ -32,6 +32,163 @@ if($results)
         </div>
     <?php
     }
-else
-    echo Yii::t('dictionary', 'Nothing has been found by your request.')
+    if($undergrads)
+    {
+        foreach($undergrads as $result)
+        {
+            ?>
+            <div class="search-result" >
+                <div class="title"><?=Html::a($result['name'], ['/undergraduate/view','id'=>$result['id']]);?> | Undergraduate Schools</div>
+                <?php
+                $text=word_limiter($result['about'],50);
+                $text=preg_replace("/{$_POST['search']}/i", "<span class='founded' >{$_POST['search']}</span>", $text);
+                echo $text;?>
+            </div>
+        <?php
+        }
+    }
+    if($business)
+    {
+        foreach($business as $result)
+        {
+            ?>
+            <div class="search-result" >
+                <div class="title"><?=Html::a($result['name'], ['/business/view','id'=>$result['id']]);?> | Business Schools</div>
+                <?php
+                $text=word_limiter($result['about'],50);
+                $text=preg_replace("/{$_POST['search']}/i", "<span class='founded' >{$_POST['search']}</span>", $text);
+                echo $text;?>
+            </div>
+        <?php
+        }
+    }
+    if($law){
+        foreach($law as $result)
+        {
+            ?>
+            <div class="search-result" >
+                <div class="title"><?=Html::a($result['name'], ['/law/view','id'=>$result['id']]);?> | Law Schools</div>
+                <?php
+                $text=word_limiter($result['about'],50);
+                $text=preg_replace("/{$_POST['search']}/i", "<span class='founded' >{$_POST['search']}</span>", $text);
+                echo $text;?>
+            </div>
+        <?php
+        }
+    }
+    if($dental){
+        foreach($dental as $result)
+        {
+            ?>
+            <div class="search-result" >
+                <div class="title"><?=Html::a($result['name'], ['/dental/view','id'=>$result['id']]);?> | Dental Schools</div>
+                <?php
+                $text=word_limiter($result['about'],50);
+                $text=preg_replace("/{$_POST['search']}/i", "<span class='founded' >{$_POST['search']}</span>", $text);
+                echo $text;?>
+            </div>
+        <?php
+        }
+    }
+    if($nursing){
+        foreach($nursing as $result)
+        {
+            ?>
+            <div class="search-result" >
+                <div class="title"><?=Html::a($result['name'], ['/nursing/view','id'=>$result['id']]);?> | Nursing Schools</div>
+                <?php
+                $text=word_limiter($result['about'],50);
+                $text=preg_replace("/{$_POST['search']}/i", "<span class='founded' >{$_POST['search']}</span>", $text);
+                echo $text;?>
+            </div>
+        <?php
+        }
+    }
+    if($medical){
+        foreach($medical as $result)
+        {
+            ?>
+            <div class="search-result" >
+                <div class="title"><?=Html::a($result['name'], ['/medical/view','id'=>$result['id']]);?> | Medical Schools</div>
+                <?php
+                $text=word_limiter($result['about'],50);
+                $text=preg_replace("/{$_POST['search']}/i", "<span class='founded' >{$_POST['search']}</span>", $text);
+                echo $text;?>
+            </div>
+        <?php
+        }
+    }
+    if($optometry){
+        foreach($optometry as $result)
+        {
+            ?>
+            <div class="search-result" >
+                <div class="title"><?=Html::a($result['name'], ['/optometry/view','id'=>$result['id']]);?> | Optometry Schools</div>
+                <?php
+                $text=word_limiter($result['about'],50);
+                $text=preg_replace("/{$_POST['search']}/i", "<span class='founded' >{$_POST['search']}</span>", $text);
+                echo $text;?>
+            </div>
+        <?php
+        }
+    }
+    if($physical){
+        foreach($physical as $result)
+        {
+            ?>
+            <div class="search-result" >
+                <div class="title"><?=Html::a($result['name'], ['/physical/view','id'=>$result['id']]);?> | Physical Therapy Schools</div>
+                <?php
+                $text=word_limiter($result['about'],50);
+                $text=preg_replace("/{$_POST['search']}/i", "<span class='founded' >{$_POST['search']}</span>", $text);
+                echo $text;?>
+            </div>
+        <?php
+        }
+    }
+    if($engineering){
+        foreach($engineering as $result)
+        {
+            ?>
+            <div class="search-result" >
+                <div class="title"><?=Html::a($result['name'], ['/engineering/view','id'=>$result['id']]);?> | Engineering Schools</div>
+                <?php
+                $text=word_limiter($result['about'],50);
+                $text=preg_replace("/{$_POST['search']}/i", "<span class='founded' >{$_POST['search']}</span>", $text);
+                echo $text;?>
+            </div>
+        <?php
+        }
+    }
+    if($pharmacy){
+        foreach($pharmacy as $result)
+        {
+            ?>
+            <div class="search-result" >
+                <div class="title"><?=Html::a($result['name'], ['/pharmacy/view','id'=>$result['id']]);?> | Pharmacy Schools</div>
+                <?php
+                $text=word_limiter($result['about'],50);
+                $text=preg_replace("/{$_POST['search']}/i", "<span class='founded' >{$_POST['search']}</span>", $text);
+                echo $text;?>
+            </div>
+        <?php
+        }
+    }
+    if($occupational){
+        foreach($occupational as $result)
+        {
+            ?>
+            <div class="search-result" >
+                <div class="title"><?=Html::a($result['name'], ['/occupational/view','id'=>$result['id']]);?> | Occupational Therapy Schools</div>
+                <?php
+                $text=word_limiter($result['about'],50);
+                $text=preg_replace("/{$_POST['search']}/i", "<span class='founded' >{$_POST['search']}</span>", $text);
+                echo $text;?>
+            </div>
+        <?php
+        }
+    }
+
+    if(!$page && !$undergrads && !$business && !$law && !$dental && !$nursing && !$medical
+        &&!$optometry && !$physical && !$engineering && !$pharmacy && !$occupational) echo 'Nothing has been found by your request.';
 ?>

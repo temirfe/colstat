@@ -251,7 +251,13 @@ AppAsset::register($this);
     <?php $this->registerJsFile('/js/social-buttons.js');?>
     <script type="text/javascript">
         window.onload=function(){
-            $('.js_search').click(function(e){e.preventDefault();});
+            $('.js_search').click(
+                function(e){
+                    e.preventDefault();
+                    setTimeout(function(){ $('.js_search_input').focus();}, 500);
+                }
+
+            );
             var controller=$('.js_controller_name').text();
             $(document).on('click','.js_compare_init',function(){
                 $('.table-striped').addClass('table-hover js_table_compare');

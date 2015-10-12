@@ -769,7 +769,9 @@ class SiteController extends Controller
 
     public function actionSearch()
     {
-        $results='';
+        $page=''; $undergrads=''; $business='';$law='';$dental=''; $nursing='';
+        $medical='';$optometry='';$physical='';$engineering=''; $pharmacy='';
+        $occupational='';
         if(isset($_POST['search']) && strlen($_POST['search'])>=3)
         {
             //$results=$pages||$news || $events ? array_merge($pages, $news, $events):null;
@@ -779,9 +781,53 @@ class SiteController extends Controller
                 ->from('pages')
                 ->where('title LIKE :search OR content LIKE :search', [':search' =>"%{$_POST['search']}%"])
                 ->all();
-            $results=$page;
+            $undergrads=$query->select(['id', 'name','about'])
+                ->from('university')
+                ->where('name LIKE :search OR about LIKE :search', [':search' =>"%{$_POST['search']}%"])
+                ->all();
+            $business=$query->select(['id', 'name','about'])
+                ->from('business')
+                ->where('name LIKE :search OR about LIKE :search', [':search' =>"%{$_POST['search']}%"])
+                ->all();
+            $law=$query->select(['id', 'name','about'])
+                ->from('law')
+                ->where('name LIKE :search OR about LIKE :search', [':search' =>"%{$_POST['search']}%"])
+                ->all();
+            $dental=$query->select(['id', 'name','about'])
+                ->from('dental')
+                ->where('name LIKE :search OR about LIKE :search', [':search' =>"%{$_POST['search']}%"])
+                ->all();
+            $nursing=$query->select(['id', 'name','about'])
+                ->from('nursing')
+                ->where('name LIKE :search OR about LIKE :search', [':search' =>"%{$_POST['search']}%"])
+                ->all();
+            $medical=$query->select(['id', 'name','about'])
+                ->from('medical')
+                ->where('name LIKE :search OR about LIKE :search', [':search' =>"%{$_POST['search']}%"])
+                ->all();
+            $optometry=$query->select(['id', 'name','about'])
+                ->from('optometry')
+                ->where('name LIKE :search OR about LIKE :search', [':search' =>"%{$_POST['search']}%"])
+                ->all();
+            $physical=$query->select(['id', 'name','about'])
+                ->from('physical_therapy')
+                ->where('name LIKE :search OR about LIKE :search', [':search' =>"%{$_POST['search']}%"])
+                ->all();
         }
-        return $this->render('search',['results'=>$results]);
+        return $this->render('search',[
+            'page'=>$page,
+            'undergrads'=>$undergrads,
+            'business'=>$business,
+            'law'=>$law,
+            'dental'=>$dental,
+            'nursing'=>$nursing,
+            'medical'=>$medical,
+            'optometry'=>$optometry,
+            'physical'=>$physical,
+            'engineering'=>$engineering,
+            'pharmacy'=>$pharmacy,
+            'occupational'=>$occupational,
+        ]);
     }
     public function actionRun2(){
         $user=User::findOne(2);

@@ -39,7 +39,7 @@ class Pharmacy extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'city', 'state', 'contact', 'pharm_school_name', 'accred_status', 'inst_type', 'main_campus', 'branch_campuses', 'enter_class_stat'], 'safe'],
+            [['name', 'city', 'state', 'contact', 'pharm_school_name', 'accred_status', 'inst_type', 'main_campus', 'branch_campuses', 'enter_class_stat','about'], 'safe'],
             [['curriculum', 'addit_reqs', 'prereq_courses', 'appl_process_reqs'], 'string'],
             [['name', 'city', 'pharm_school_name', 'branch_campuses'], 'string', 'max' => 255],
             [['state', 'accred_status', 'inst_type'], 'string', 'max' => 20],
