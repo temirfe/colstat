@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /* @var $model app\models\User */
 /* @var $profile app\models\Profile */
 if(!isset($yiiuser)) $yiiuser=Yii::$app->user;
-$this->title = $model->name;
+$this->title = $model->username;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="">
         from <?=$model->city;?>, <?=$model->state;?>
     </div>
+    <br />
 
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#home">User Applications</a></li>

@@ -12,10 +12,7 @@ use app\models\User;
 <div class="user-form">
 
     <?php $form = ActiveForm::begin(); ?>
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
-
     <?php
     if(Yii::$app->request->get('type')=='complete' && !$model->email || User::isAdmin())
         echo $form->field($model, 'email')->textInput(['maxlength' => true]);

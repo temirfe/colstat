@@ -41,8 +41,8 @@
                         'password_hash' => 'asdfasdfsdfasdf',
                         'twi_id' => $content->id,
                         'status' => 1,
-                        'city' => 'N/A',
-                        'state' => 'N/A',
+                        'city' => '',
+                        'state' => '',
                         'created_at' => time(),
                     ])->execute();
                     $identity=User::findOne(['username'=>$content->screen_name]);

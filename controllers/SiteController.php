@@ -301,23 +301,6 @@ class SiteController extends Controller
         }
     }
 
-
-    public function actionRun(){
-        $db=Yii::$app->db;
-        $colnames=$db->createCommand("SELECT * FROM university_import")->queryAll();
-        foreach($colnames as $row){
-            $params = [':name' => $row['name'], ':state' => $row['state'], ':id' => $row['id']];
-            $check=$db->createCommand("SELECT id FROM university_import WHERE name=:name AND state=:state AND id<>:id", $params)->queryOne();
-            if($check) echo $row['id']." = ".$check['id'].'<br />';
-        }
-
-        /*foreach($keyray as $colname=>$colvals){
-            if(in_array('Institution Name',$colvals)) {echo "<b>".$colname."</b><br />"; break;}
-            else echo $colname."<br />";
-        }*/
-
-    }
-
     public function actionExcel(){
         $file='uploads/Undergrad.xlsx';
         //$objPHPExcel = new \PHPExcel();
@@ -467,11 +450,11 @@ class SiteController extends Controller
 
     public $fb_client_id='1021642147856249';
     public $fb_client_secret='6ceac7e0efc27d6f28b7e3364ab8c55a';
-    public $fb_redirect_uri='http://yii.collegestatistics.org/site/loginfb';
+    public $fb_redirect_uri='http://collegestatistics.org/site/loginfb';
 
     public $google_client_id='57130310-5sitaflvkdeq61f0gc4b4h1qqcum884k.apps.googleusercontent.com';
     public $google_client_secret='q2BJg8g8E_PFjbcQCBX6lAh2';
-    public $google_redirect_uri='http://yii.collegestatistics.org/site/logingoogle';
+    public $google_redirect_uri='http://collegestatistics.org/site/logingoogle';
 
     public function actionOauth()
     {
@@ -567,9 +550,13 @@ class SiteController extends Controller
 
                         }
                         else{
+                            $emailexpl=explode('@',$outObj->email);
+                            $username=$emailexpl[0];
+                            if($dao->createCommand("SELECT id FROM user WHERE username='{$emailexpl[0]}'")->queryScalar()) //if this username is taken
+                                $username=$username.rand(1,999);
                             $dao->createCommand()->insert('user', [
                                 'name' => $outObj->name,
-                                'username' =>$outObj->email,
+                                'username' =>$username,
                                 'password_hash' => 'asdfasdfsdfasdf',
                                 'email' => $outObj->email,
                                 'google_id' => $outObj->sub,
@@ -578,7 +565,7 @@ class SiteController extends Controller
                                 'state' => 'N/A',
                                 'created_at' => time(),
                             ])->execute();
-                            $identity=User::findOne(['username'=>$outObj->email]);
+                            $identity=User::findOne(['username'=>$username]);
                             $duration=3600*24*30; // 30 days
                             $app->user->login($identity, $duration);
                             Yii::$app->getSession()->setFlash('success', 'You have been registered via Google Plus. Please complete your profile.');
@@ -683,18 +670,22 @@ class SiteController extends Controller
 
                         }
                         else{
+                            $emailexpl=explode('@',$graph->email);
+                            $username=$emailexpl[0];
+                            if($dao->createCommand("SELECT id FROM user WHERE username='{$emailexpl[0]}'")->queryScalar()) //if this username is taken
+                                $username=$username.rand(1,999);
                             $dao->createCommand()->insert('user', [
                                 'name' => $graph->first_name." ".$graph->last_name,
-                                'username' =>$graph->email,
+                                'username' =>$username,
                                 'password_hash' => 'asdfasdfsdfasdf',
                                 'email' => $graph->email,
                                 'fb_id' => $graph->id,
                                 'status' => 1,
-                                'city' => 'N/A',
-                                'state' => 'N/A',
+                                'city' => '',
+                                'state' => '',
                                 'created_at' => time(),
                             ])->execute();
-                            $identity=User::findOne(['username'=>$graph->email]);
+                            $identity=User::findOne(['username'=>$username]);
                             $duration=3600*24*30; // 30 days
                             $app->user->login($identity, $duration);
                             Yii::$app->getSession()->setFlash('success', 'You have been registered via facebook. Please complete your profile.');
@@ -829,6 +820,10 @@ class SiteController extends Controller
             'occupational'=>$occupational,
         ]);
     }
+    public function actionRun(){
+        $username=explode('@','temirbek@gmail.com');
+        print_r($username);
+    }
     public function actionRun2(){
         $user=User::findOne(2);
         Yii::$app->mailer->compose('emailConfirm', ['user' => $user])
@@ -836,5 +831,20 @@ class SiteController extends Controller
             ->setTo('temirbek@gmail.com')
             ->setSubject('Email confirmation for ' . Yii::$app->name)
             ->send();
+    }
+    public function actionRun3(){
+        $db=Yii::$app->db;
+        $colnames=$db->createCommand("SELECT * FROM university_import")->queryAll();
+        foreach($colnames as $row){
+            $params = [':name' => $row['name'], ':state' => $row['state'], ':id' => $row['id']];
+            $check=$db->createCommand("SELECT id FROM university_import WHERE name=:name AND state=:state AND id<>:id", $params)->queryOne();
+            if($check) echo $row['id']." = ".$check['id'].'<br />';
+        }
+
+        /*foreach($keyray as $colname=>$colvals){
+            if(in_array('Institution Name',$colvals)) {echo "<b>".$colname."</b><br />"; break;}
+            else echo $colname."<br />";
+        }*/
+
     }
 }

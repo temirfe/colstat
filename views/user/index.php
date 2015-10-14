@@ -31,7 +31,11 @@ else {$avisible=false; $create='';}
 
             ],
             'username',
-            'email:email',
+            [
+                'attribute'=>'email',
+                'value'=>'email',
+                'visible'=>$avisible,
+            ],
             [
                 'attribute' => 'created_at',
                 'format' => 'raw',
@@ -55,6 +59,7 @@ else {$avisible=false; $create='';}
                     return $status;
                 },
                 'filter' => Html::activeDropDownList($searchModel, 'status', [1=>'Active',0=>'Not active'],['class'=>'form-control','prompt' => '']),
+                'visible'=>$avisible,
             ],
             // 'email_confirm_token:email',
             // 'password_reset_token',
@@ -68,6 +73,7 @@ else {$avisible=false; $create='';}
                     return $role;
                 },
                 'filter' => Html::activeDropDownList($searchModel, 'role', [20=>'Admin','10'=>'User'],['class'=>'form-control','prompt' => '']),
+                'visible'=>$avisible,
             ],
             // 'hear',
             // 'fb_id',
