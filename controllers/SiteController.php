@@ -96,10 +96,11 @@ class SiteController extends Controller
                     $saveFile='uploads/'.$fileName;
                     $file->saveAs($saveFile);
 
+                    //$this->ExcelMajor($saveFile);
                     $this->Excelparse($saveFile,$cat);
                     @unlink($saveFile);
                     Yii::$app->getSession()->setFlash('success', 'File has been parsed.');
-                    return $this->goHome();
+                    //return $this->goHome();
                 }
                 else return "No file selected!";
             }
@@ -278,7 +279,6 @@ class SiteController extends Controller
         //$db->createCommand()->batchInsert('university_import', $headerNames, $batchRow)->execute(); //uncomment if u remove actionSyncuni
     }
 
-
     public function actionSyncuni(){
         $db=Yii::$app->db;
         $sourcerows=$db->createCommand("SELECT * FROM university_import")->queryAll();
@@ -335,6 +335,54 @@ class SiteController extends Controller
             {
                 echo 'title: '.$title." price:".$price."</br>";
             }
+        }
+    }
+
+    protected function ExcelMajor($file){
+        //$objPHPExcel = new \PHPExcel();
+
+        //$file=mb_convert_encoding($file, 'Windows-1251', 'UTF-8');
+        $inputFileType = \PHPExcel_IOFactory::identify($file);
+        $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+        $objPHPExcel=$objReader->load($file);
+
+        $objWorksheet = $objPHPExcel->getActiveSheet();
+
+        $highestRow = $objWorksheet->getHighestRow(); // e.g. 10
+        $highestColumn = $objWorksheet->getHighestColumn(); // e.g 'F'
+        $columnIndex=\PHPExcel_Cell::stringFromColumnIndex($highestColumn);
+        $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn); // e.g. 5
+
+        $schools=[];
+
+        for ($row = 1; $row <= $highestRow; ++$row) {
+            $name=''; $major='';
+            for ($col = 0; $col <= $highestColumnIndex; ++$col) {
+                if($col==1) $name=$objWorksheet->getCellByColumnAndRow($col, $row)->getValue();
+                elseif($col==2) $major=$objWorksheet->getCellByColumnAndRow($col, $row)->getValue();
+            }
+            if($name && $major && $major!='Grand total' && $name!='University '){
+                if(isset($schools[$name])){
+                    if(!in_array($major,$schools[$name])){
+                        if(!is_array($schools[$name]))
+                            $schools[$name]=array();
+                        $schools[$name][]=$major;
+                    }
+                }
+                else{
+                    $schools[$name]=array();
+                    $schools[$name][]=$major;
+                }
+            }
+        }
+
+        /*echo "<pre>";
+        print_r($schools);
+        echo "</pre>";*/
+        $dao=Yii::$app->db;
+        foreach($schools as $school=>$major){
+            $majors=implode(';',$major);
+            $dao->createCommand("UPDATE university SET majors_offered=:majors WHERE name=:name")->bindParam('majors',$majors)->bindParam('name',$school)->execute();
         }
     }
 
@@ -762,7 +810,7 @@ class SiteController extends Controller
     {
         $page=''; $undergrads=''; $business='';$law='';$dental=''; $nursing='';
         $medical='';$optometry='';$physical='';$engineering=''; $pharmacy='';
-        $occupational='';
+        $occupational=''; $announcement=''; $users='';
         if(isset($_POST['search']) && strlen($_POST['search'])>=3)
         {
             //$results=$pages||$news || $events ? array_merge($pages, $news, $events):null;
@@ -804,6 +852,14 @@ class SiteController extends Controller
                 ->from('physical_therapy')
                 ->where('name LIKE :search OR about LIKE :search', [':search' =>"%{$_POST['search']}%"])
                 ->all();
+            $announcement=$query->select(['id', 'title','description'])
+                ->from('announcements')
+                ->where('title LIKE :search OR description LIKE :search OR content LIKE :search', [':search' =>"%{$_POST['search']}%"])
+                ->all();
+            $users=$query->select(['id', 'username','city','state'])
+                ->from('user')
+                ->where('username LIKE :search', [':search' =>"%{$_POST['search']}%"])
+                ->all();
         }
         return $this->render('search',[
             'page'=>$page,
@@ -818,6 +874,8 @@ class SiteController extends Controller
             'engineering'=>$engineering,
             'pharmacy'=>$pharmacy,
             'occupational'=>$occupational,
+            'announcement'=>$announcement,
+            'users'=>$users,
         ]);
     }
     public function actionRun(){

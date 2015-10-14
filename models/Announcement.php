@@ -31,7 +31,7 @@ class Announcement extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'title', 'slug', 'description', 'content'], 'required'],
+            [[ 'title'], 'required'],
             [['id'], 'integer'],
             [['description', 'content'], 'string'],
             [['updated_at', 'created_at'], 'safe'],

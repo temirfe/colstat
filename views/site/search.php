@@ -188,7 +188,32 @@ if($page)
         <?php
         }
     }
+    if($announcement){
+        foreach($announcement as $result)
+        {
+            ?>
+            <div class="search-result" >
+                <div class="title"><?=Html::a($result['title'], ['/announcement/view','id'=>$result['id']]);?></div>
+                <?php
+                $text=word_limiter($result['description'],50);
+                $text=preg_replace("/{$_POST['search']}/i", "<span class='founded' >{$_POST['search']}</span>", $text);
+                echo $text;?>
+            </div>
+        <?php
+        }
+    }
+    if($users){
+        foreach($users as $result)
+        {
+            ?>
+            <div class="search-result" >
+                <div class="title"><?=Html::a($result['username'], ['/user/view','id'=>$result['id']]);?></div>
+                <?=$result['city'].", ".$result['state'];?>
+            </div>
+        <?php
+        }
+    }
 
     if(!$page && !$undergrads && !$business && !$law && !$dental && !$nursing && !$medical
-        &&!$optometry && !$physical && !$engineering && !$pharmacy && !$occupational) echo 'Nothing has been found by your request.';
+        &&!$optometry && !$physical && !$engineering && !$pharmacy && !$occupational&& !$announcement&& !$users) echo 'Nothing has been found by your request.';
 ?>

@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
         foreach($comments as $comment){ ?>
             <div class="comment-row">
                 <div class="comment-col">
-                    <div class="comment-name pull-left"><?=$comment['user']['name'];?></div>
+                    <div class="comment-name pull-left"><?=$comment['user']['username'];?></div>
                     <div class="comment-date"><?=$comment['date'];?></div>
                     <div class="comment-content"><?=$comment['text'];?></div>
                 </div>
