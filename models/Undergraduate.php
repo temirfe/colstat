@@ -86,7 +86,8 @@ class Undergraduate extends \yii\db\ActiveRecord
             [['name', 'address', 'city', 'state', 'zip', 'phone', 'fax', 'url', 'president', 'url_fin_aid', 'url_admissions', 'url_apply', 'grad_rate', 'grad_rate_men', 'grad_rate_women', 'apply_fee', 'pct_adm_ttl', 'pct_adm_men', 'pct_adm_wmen', 'pct_ue_native', 'pct_ue_asian', 'pct_ue_black', 'pct_ue_latino', 'pct_ue_white', 'pct_ue_two', 'pct_ue_unk', 'pct_fullfirst_any_finaid', 'avg_fullfirst_loan', 'pct_fullfirst_loan', 'avg_fullfirst_oloan', 'tuition_in', 'tuition_out'], 'safe'],
             [['about'], 'string'],
             [['name', 'address', 'city', 'president', 'url_fin_aid', 'url_admissions', 'url_apply'], 'string', 'max' => 255],
-            [['state', 'zip', 'phone', 'fax', 'url', 'grad_rate', 'grad_rate_men', 'grad_rate_women', 'apply_fee', 'pct_adm_ttl', 'pct_adm_men', 'pct_adm_wmen', 'pct_ue_native', 'pct_ue_asian', 'pct_ue_black', 'pct_ue_latino', 'pct_ue_white', 'pct_ue_two', 'pct_ue_unk', 'pct_fullfirst_any_finaid', 'avg_fullfirst_loan', 'pct_fullfirst_loan', 'avg_fullfirst_oloan', 'tuition_in', 'tuition_out'], 'string', 'max' => 20]
+            [['state', 'zip', 'phone', 'fax', 'url', 'grad_rate', 'grad_rate_men', 'grad_rate_women', 'apply_fee', 'pct_adm_ttl', 'pct_adm_men', 'pct_adm_wmen', 'pct_ue_native', 'pct_ue_asian', 'pct_ue_black', 'pct_ue_latino', 'pct_ue_white', 'pct_ue_two', 'pct_ue_unk', 'pct_fullfirst_any_finaid', 'avg_fullfirst_loan', 'pct_fullfirst_loan', 'avg_fullfirst_oloan', 'tuition_in', 'tuition_out'], 'string', 'max' => 20],
+            [['med_sat_cr', 'med_sat_math', 'med_sat_wr', 'avg_sat', 'med_act_cum', 'med_act_eng', 'med_act_math', 'med_act_wr', 'pct_fed_loan', 'med_debt_grad', 'med_loan_monthly_payment', 'pct_loan_principal_paid', 'med_earn_grad_fed_aid', 'pct_std_over25k', 'majors_offered'],'safe']
         ];
     }
 

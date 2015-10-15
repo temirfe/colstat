@@ -48,7 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#home">User Applications</a></li>
-        <li><a data-toggle="tab" href="#about">About University</a></li>
+        <li><a data-toggle="tab" href="#about">Additional Information</a></li>
+        <li><a data-toggle="tab" href="#majors">Majors Offered</a></li>
     </ul>
 
     <div class="tab-content mt10">
@@ -169,6 +170,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     'pct_std_over25k',
                 ],
             ]) ?>
+        </div>
+        <div id="majors" class="tab-pane fade">
+            <?php
+            if($model->majors_offered){
+                $majors=explode(';',$model->majors_offered);
+                sort($majors);
+                echo "<ul>";
+                foreach($majors as $major){
+                    echo "<li>".$major."</li>";
+                }
+                echo "</ul>";
+            }
+            ?>
         </div>
     </div>
 </div>
