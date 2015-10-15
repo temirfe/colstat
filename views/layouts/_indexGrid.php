@@ -17,6 +17,7 @@ else{$compare_class=''; $compare_select_hidden='hidden'; $compare_init_hidden=''
 <?=GridView::widget([
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
+    'summary'=>'',
     'tableOptions'=>['class' => 'table table-striped table-bordered '.$compare_class],
     'rowOptions'=>function ($model, $key, $index, $grid){
         $class='';

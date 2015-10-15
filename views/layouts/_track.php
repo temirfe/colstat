@@ -14,7 +14,7 @@ echo GridView::widget([
             'attribute' => 'user_id',
             'format' => 'raw',
             'value' => function($model) {
-                return Html::a($model->user->name, ['/user/view', 'id' => $model->user_id]);
+                return Html::a($model->user->username, ['/user/view', 'id' => $model->user_id]);
             },
             'headerOptions' => ['width' => '200'],
         ],
@@ -28,7 +28,15 @@ echo GridView::widget([
         ],
         'test_score',
         'gpa',
-        'scholarship_award',
+        [
+            'attribute' => 'scholarship_award',
+            'format' => 'raw',
+            'value' => function($model) {
+                if($model->scholarship_award) $date='$'.number_format($model->scholarship_award,2);
+                else $date='N/A';
+                return $date;
+            },
+        ],
         'status',
         [
             'attribute' => 'date_sent',

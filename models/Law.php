@@ -73,7 +73,7 @@ class Law extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'address', 'city', 'state', 'zip', 'phone', 'fax', 'url', 'president', 'url_fin_aid', 'url_admissions', 'url_apply', 'grad_rate', 'grad_rate_men', 'grad_rate_women', 'apply_fee', 'pct_adm_ttl', 'pct_adm_men', 'pct_adm_wmen', 'pct_fullfirst_any_finaid', 'avg_fullfirst_loan', 'pct_fullfirst_loan', 'avg_fullfirst_oloan', 'tuition_in', 'tuition_out', 'gpa_75', 'gpa_50', 'gpa_25', 'expen_offcamp', 'expen_athome'], 'law'],
+            [['name', 'address', 'city', 'state', 'zip', 'phone', 'fax', 'url', 'president', 'url_fin_aid', 'url_admissions', 'url_apply', 'grad_rate', 'grad_rate_men', 'grad_rate_women', 'apply_fee', 'pct_adm_ttl', 'pct_adm_men', 'pct_adm_wmen', 'pct_fullfirst_any_finaid', 'avg_fullfirst_loan', 'pct_fullfirst_loan', 'avg_fullfirst_oloan', 'tuition_in', 'tuition_out', 'gpa_75', 'gpa_50', 'gpa_25', 'expen_offcamp', 'expen_athome'], 'safe'],
             [['about'], 'string'],
             [['appl_ttl', 'appl_men', 'appl_wmen', 'adm_ttl', 'adm_men', 'adm_wmen', 'l_class_size', 'lsat_75', 'lsat_50', 'lsat_25', 'scholar_less_full', 'scholar_full', 'scholar_more_full', 'ttl_stud_granted', 'grant_per_75', 'grant_per_50', 'grant_per_25'], 'integer'],
             [['name', 'address', 'city', 'president', 'url_fin_aid', 'url_admissions', 'url_apply'], 'string', 'max' => 255],

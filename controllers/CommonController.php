@@ -30,7 +30,9 @@ class CommonController extends Controller
         $ids=[];
         if(isset($_GET['m'])) {
             $model=$_GET['m'];
-            if($model=='undergraduate') $table='university'; else $table=$model;
+            if($model=='undergraduate') $table='university';
+            elseif($model=='physical') $table='physical_therapy';
+            else $table=$model;
             foreach($_SESSION['compare'][$model] as $row)
             {
                 $ids[]=$row;

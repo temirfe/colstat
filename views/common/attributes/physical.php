@@ -9,11 +9,19 @@ $attributes=[
     ],
     'city',
     'state',
-    'about:ntext',
-    'inst_type',
+    [
+        'attribute' => 'inst_type',
+        'label' => 'Institution Type',
+    ],
     'campus_set',
     'campus_house',
-    'stud_popul',
-    'grad_rate',
+    [
+        'attribute' => 'stud_popul',
+        'label' => 'Student Population',
+    ],
+    [
+        'attribute' => 'grad_rate',
+        'label' => 'Graduation Rate',
+    ],
     'transfer_out_rate',
 ];

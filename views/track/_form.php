@@ -17,9 +17,9 @@ use kartik\date\DatePicker;
     if($model->model_type) $model_type=$model->model_type; else $model_type=Yii::$app->request->get('type');
     $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
-    <?= $form->field($model, 'model_id')->hiddenInput(['value'=>Yii::$app->request->get('mid')])->label(''); ?>
+    <?= $form->field($model, 'model_id')->hiddenInput(['value'=>Yii::$app->request->get('mid')])->label(false); ?>
 
-    <?= $form->field($model, 'model_type')->hiddenInput(['value'=>$model_type])->label('');  ?>
+    <?= $form->field($model, 'model_type')->hiddenInput(['value'=>$model_type])->label(false);  ?>
 
     <?php
     if($model_type=='business' || $model_type=='engineering')
@@ -89,9 +89,14 @@ use kartik\date\DatePicker;
     }
     echo $form->field($model, 'gpa')->textInput(['maxlength' => true]); ?>
 
-    <?= $form->field($model, 'scholarship_award')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'scholarship_award', [
+    'template' => '{label}<div class="col-sm-6 inner-addon left-addon"><i class="fa fa-usd"></i>{input}{error}{hint}</div>'
+])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    <?php
+    $status_items=['Sent'=>'Sent','File Completed'=>'File Completed','Undergoing Review'=>'Undergoing Review',
+        'Accepted'=>'Accepted','Rejected'=>'Rejected','Waitlisted'=>'Waitlisted'];
+    echo $form->field($model, 'status')->dropDownList($status_items,['prompt'=>'Select..']); ?>
 
     <?php
     echo $form->field($model, 'date_sent')->widget(DatePicker::classname(), [
@@ -105,16 +110,6 @@ use kartik\date\DatePicker;
     ?>
     <?php
     echo $form->field($model, 'date_status_complete')->widget(DatePicker::classname(), [
-        'removeButton' => false,
-        'pluginOptions' => [
-            'autoclose'=>true,
-            'format' => 'yyyy-mm-dd',
-            'todayHighlight' => true,
-        ]
-    ]);
-    ?>
-    <?php
-    echo $form->field($model, 'date_update')->widget(DatePicker::classname(), [
         'removeButton' => false,
         'pluginOptions' => [
             'autoclose'=>true,

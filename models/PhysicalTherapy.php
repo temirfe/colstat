@@ -57,11 +57,11 @@ class PhysicalTherapy extends \yii\db\ActiveRecord
             'address' => 'Address',
             'url' => 'Url',
             'about' => 'About',
-            'inst_type' => 'Inst Type',
+            'inst_type' => 'Institution Type',
             'campus_set' => 'Campus Set',
             'campus_house' => 'Campus House',
-            'stud_popul' => 'Stud Popul',
-            'grad_rate' => 'Grad Rate',
+            'stud_popul' => 'Student Population',
+            'grad_rate' => 'Graduation Rate',
             'transfer_out_rate' => 'Transfer Out Rate',
         ];
     }

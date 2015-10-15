@@ -8,12 +8,19 @@ $attributes=[
         'value' => Html::a($model['name'], ['/nursing/view','id'=>$model['id']])
     ],
     'city',
-    'state',
-    'about:ntext',
-    'inst_type',
+    'state',[
+        'attribute' => 'inst_type',
+        'label' => 'Institution Type',
+    ],
     'campus_set',
     'campus_house',
-    'stud_popul',
-    'grad_rate',
+    [
+        'attribute' => 'stud_popul',
+        'label' => 'Student Population',
+    ],
+    [
+        'attribute' => 'grad_rate',
+        'label' => 'Graduation Rate',
+    ],
     'transfer_out_rate',
 ];

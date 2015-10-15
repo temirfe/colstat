@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Track */
 
-$this->title = 'Create Track for '.Yii::$app->request->get('name');
+$this->title = 'Add Your Application';
 $this->params['breadcrumbs'][] = ['label' => 'Tracks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

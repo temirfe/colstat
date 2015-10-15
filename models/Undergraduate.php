@@ -154,6 +154,23 @@ class Undergraduate extends \yii\db\ActiveRecord
             'act_wr_75' => 'ACT Writing 75th percentile score',
             'tuition_in' => 'In-state tuition and fees',
             'tuition_out' => 'Out-of-state tuition and fees',
+
+            'med_sat_cr' => 'Median SAT Score (Critical Reading)',
+            'med_sat_math' => 'Median SAT Score (Math)',
+            'med_sat_wr' => 'Median SAT Score (Writing)',
+            'avg_sat' => 'Average SAT Score',
+            'med_act_cum' => 'Median Cumulative ACT Score',
+            'med_act_eng' => 'Median ACT English Score',
+            'med_act_math' =>'Median ACT Math Score',
+            'med_act_wr' => 'ACT Median Writing Score',
+            'pct_fed_loan' => 'Percent of all federal undergraduate students receiving a federal student loan (Excludes Parent Plus loans)',
+            'med_debt_grad' => 'Median debt upon graduation (Excludes private and Graduate Plus loans)',
+            'med_loan_monthly_payment' => 'Typical median loan monthly payment amount (if repayed in 10 years at 6% interest rate)',
+            'pct_loan_principal_paid' => '% of loans where $1 or more of principal has been paid (3 years after graduation)',
+            'med_earn_grad_fed_aid' => 'Median earnings of graduates that received federal aid (10 years after entering the school)',
+            'pct_std_over25k' => 'Percent of students earning over $25,000/year who received federal aid (10 years after graduation)',
+            'majors_offered' => 'Major',
+
         ];
     }
 }

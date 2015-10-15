@@ -20,7 +20,6 @@ use yii\widgets\ActiveForm;
         <?php
         }?>
     </div>
-    <hr />
     <div class="comment-form row">
         <div class="col-sm-6">
             <?php
@@ -30,7 +29,8 @@ use yii\widgets\ActiveForm;
                     'action'=>['comment/create'],
                 ]);
                 ?>
-                <?= $form->field($cmodel, 'text')->textArea(['maxlength' => true, 'rows'=>6])->label('') ?>
+                <div style="color: #888;margin: 11px 0 5px;">Add comment</div>
+                <?= $form->field($cmodel, 'text')->textArea(['maxlength' => true, 'rows'=>3])->label(false) ?>
 
                 <?=Html::activeHiddenInput($cmodel,'model_type',['value'=>$model_type])?>
                 <?=Html::activeHiddenInput($cmodel,'model_id',['value'=>$model_id])?>

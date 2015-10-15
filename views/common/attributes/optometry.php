@@ -9,7 +9,6 @@ $attributes=[
     ],
     'city',
     'state',
-    'about:ntext',
     'class_size',
     'matricul_female',
     'matricul_male',

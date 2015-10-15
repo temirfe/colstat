@@ -421,7 +421,7 @@ a.an-title:hover{text-decoration: none;}
     float: right;
     font-size: 12px;
     font-weight: bold;
-    margin-top: -14px;
+    margin-top: -23px;
 }
 .compare_init:hover{
     text-decoration: underline;
@@ -457,7 +457,7 @@ a.an-title:hover{text-decoration: none;}
     color: #fff;
     float: right;
     font-weight: bold;
-    margin-top: -21px;
+    margin-top: -30px;
     padding: 5px 10px;
 }
 .admin-panel{
@@ -477,6 +477,24 @@ a.an-title:hover{text-decoration: none;}
 .admin-panel ul li{ margin: 10px 0;}
 .admin-panel ul li a{padding: 5px 0 5px 13px; text-decoration: none; white-space: nowrap; font-size:12px;}
 .panel-opened{width: 140px;}
-.adminicon{color:#3a5a96;; padding-right: 13px; font-size: 15px;}
+.adminicon{color:#3a5a96; padding-right: 13px; font-size: 15px;}
+.gicon {color: #999; padding-right: 10px;}
 .adminicon:hover, a:hover .adminicon{cursor:pointer;color:#1e2d4c;}
 .tooltiphide .tooltip{display:none !important;}
+.compare_item table.detail-view{max-width:520px;}
+.compare_item table.detail-view th{font-weight: normal; background-color: #fff;color: #45afc7;}
+table.about-college{max-width:700px;}
+.about_school{margin-bottom: 25px;
+    margin-top: 18px;
+    overflow: hidden;}
+.news-comments {border-bottom: 1px solid #eaeaea;padding-bottom: 12px;}
+.left-addon .fa {
+    left: 16px;
+}
+.inner-addon .fa {
+    color: #ccc;
+    padding: 10px;
+    pointer-events: none;
+    position: absolute;
+}
+.track-create .form-control, .track-update .form-control{padding-left: 24px;}

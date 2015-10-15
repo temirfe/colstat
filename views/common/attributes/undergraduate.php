@@ -193,4 +193,60 @@ $attributes=[
         'attribute' => 'tuition_out',
         'label' => 'Out-of-state tuition and fees',
     ],
+    [
+        'attribute' => 'med_sat_cr',
+        'label' => 'Median SAT Score (Critical Reading)',
+    ],
+    [
+        'attribute' => 'med_sat_math',
+        'label' => 'Median SAT Score (Math)',
+    ],
+    [
+        'attribute' => 'med_sat_wr',
+        'label' => 'Median SAT Score (Writing)',
+    ],
+    [
+        'attribute' => 'avg_sat',
+        'label' => 'Average SAT Score',
+    ],
+    [
+        'attribute' => 'med_act_cum',
+        'label' => 'Median Cumulative ACT Score',
+    ],
+    [
+        'attribute' => 'med_act_eng',
+        'label' => 'Median ACT English Score',
+    ],
+    [
+        'attribute' => 'med_act_math',
+        'label' => 'Median ACT Math Score',
+    ],
+    [
+        'attribute' => 'med_act_wr',
+        'label' => 'ACT Median Writing Score',
+    ],
+    [
+        'attribute' => 'pct_fed_loan',
+        'label' => 'Percent of all federal undergraduate students receiving a federal student loan (Excludes Parent Plus loans)',
+    ],
+    [
+        'attribute' => 'med_debt_grad',
+        'label' => 'Median debt upon graduation (Excludes private and Graduate Plus loans)',
+    ],
+    [
+        'attribute' => 'med_loan_monthly_payment',
+        'label' => 'Typical median loan monthly payment amount (if repayed in 10 years at 6% interest rate)',
+    ],
+    [
+        'attribute' => 'pct_loan_principal_paid',
+        'label' => '% of loans where $1 or more of principal has been paid (3 years after graduation)',
+    ],
+    [
+        'attribute' => 'med_earn_grad_fed_aid',
+        'label' => 'Median earnings of graduates that received federal aid (10 years after entering the school)',
+    ],
+    [
+        'attribute' => 'pct_std_over25k',
+        'label' => 'Percent of students earning over $25,000/year who received federal aid (10 years after graduation)',
+    ],
 ];

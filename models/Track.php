@@ -38,14 +38,27 @@ class Track extends \yii\db\ActiveRecord
     {
         return [
             //[['model_id', 'model_type', 'specialty', 'degree_desired', 'test_score', 'gpa', 'scholarship_award', 'status', 'date_sent', 'date_status_complete', 'date_update'], 'required'],
-            [['user_id', 'model_id'], 'integer'],
+            [['user_id', 'model_id','test_score','scholarship_award'], 'integer'],
+            [['test_score'], 'validateTest'],
+            [['gpa'], 'double'],
             [['date_sent', 'date_status_complete', 'date_update'], 'safe'],
-            [['model_type', 'test_score', 'gpa', 'status'], 'string', 'max' => 20],
+            [['model_type', 'status'], 'string', 'max' => 20],
             [['specialty','specialty_other', 'degree_desired'], 'string', 'max' => 50],
-            [['scholarship_award'], 'string', 'max' => 255]
         ];
     }
 
+    public function validateTest($attribute, $params)
+    {
+        if ($this->$attribute<1 || $this->$attribute>2400) {
+            $this->addError($attribute, 'Test Score should be between 1 and 2400');
+        }
+    }
+    public function validateGpa($attribute, $params)
+    {
+        if ($this->$attribute<1 || $this->$attribute>10) {
+            $this->addError($attribute, 'GPA should be between 1 and 10.0');
+        }
+    }
     /**
      * @inheritdoc
      */
@@ -65,7 +78,7 @@ class Track extends \yii\db\ActiveRecord
             'status' => 'Status',
             'date_sent' => 'Date Sent',
             'date_status_complete' => 'Date Status Complete',
-            'date_update' => 'Date Update',
+            'date_update' => 'Date Last Updated',
         ];
     }
 

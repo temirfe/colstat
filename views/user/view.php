@@ -86,7 +86,15 @@ $this->params['breadcrumbs'][] = $this->title;
                             return $date;
                         },
                     ],
-                    'scholarship_award',
+                    [
+                        'attribute' => 'scholarship_award',
+                        'format' => 'raw',
+                        'value' => function($model) {
+                            if($model->scholarship_award) $date='$'.number_format($model->scholarship_award,2);
+                            else $date='N/A';
+                            return $date;
+                        },
+                    ],
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['width' => '67'],

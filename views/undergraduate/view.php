@@ -29,6 +29,23 @@ $this->params['breadcrumbs'][] = $this->title;
     }?>
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <div class="about_school row">
+        <div class="col-md-3">
+            <?=$model->address;?><br />
+            <?=$model->city.', '.$model->state;?> <?php if($model->zip) echo ' '.$model->zip;?><br />
+        </div>
+        <div class="col-md-3">
+            <span class='gicon glyphicon glyphicon-phone-alt'></span><?=$model->phone;?><br />
+            <span class='gicon glyphicon glyphicon-globe'></span>
+            <?php if(strpos('http',$model->url)) $url=$model->url; else $url='https://'.$model->url; echo Html::a($model->url,$url);?><br />
+        </div>
+        <div class="col-md-3">
+            <?php if($model->fax) echo '<span class="gicon">fax:</span>'.$model->fax.'<br />';?>
+            <?php if($model->president) echo '<span class="gicon">president:</span>'.$model->president.'<br />';?>
+        </div>
+        <div><?php if($model->about) echo '<p>'.$model->about.'</p>';?></div>
+    </div>
+
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#home">User Applications</a></li>
         <li><a data-toggle="tab" href="#about">About University</a></li>
@@ -38,45 +55,81 @@ $this->params['breadcrumbs'][] = $this->title;
         <div id="home" class="tab-pane fade in active">
             <?=$this->render('/layouts/_track',['dataProvider'=>$dataProvider,'model'=>$model]); ?>
         </div>
+
         <div id="about" class="tab-pane fade">
             <?= DetailView::widget([
                 'model' => $model,
+                'options'=>['class'=>'table table-striped table-bordered detail-view about-college'],
+                'template'=>'<tr><th width="450">{label}</th><td>{value}</td></tr>',
                 'attributes' => [
-                    'id',
-                    'graduate',
-                    'name',
-                    'address',
-                    'city',
-                    'state',
-                    'zip',
-                    'phone',
-                    'fax',
-                    'url:url',
-                    'president',
-                    'about:ntext',
                     'url_fin_aid:url',
                     'url_admissions:url',
                     'url_apply:url',
-                    'grad_rate',
-                    'grad_rate_men',
-                    'grad_rate_women',
+                    [
+                        'attribute' => 'grad_rate',
+                        'value' => ($model->grad_rate*100)."%",
+                    ],
+                    [
+                        'attribute' => 'grad_rate_men',
+                        'value' => ($model->grad_rate_men*100)."%",
+                    ],
+                    [
+                        'attribute' => 'grad_rate_women',
+                        'value' => ($model->grad_rate_women*100)."%",
+                    ],
                     'apply_fee',
-                    'pct_adm_ttl',
-                    'pct_adm_men',
-                    'pct_adm_wmen',
+                    [
+                        'attribute' => 'pct_adm_ttl',
+                        'value' => ($model->pct_adm_ttl*100)."%",
+                    ],
+                    [
+                        'attribute' => 'pct_adm_men',
+                        'value' => ($model->pct_adm_men*100)."%",
+                    ],
+                    [
+                        'attribute' => 'pct_adm_wmen',
+                        'value' => ($model->pct_adm_wmen*100)."%",
+                    ],
                     'ugrad_enr',
                     'ft_ugrad_enr',
                     'pt_ugrad_enr',
-                    'pct_ue_native',
-                    'pct_ue_asian',
-                    'pct_ue_black',
-                    'pct_ue_latino',
-                    'pct_ue_white',
-                    'pct_ue_two',
-                    'pct_ue_unk',
-                    'pct_fullfirst_any_finaid',
+                    [
+                        'attribute' => 'pct_ue_native',
+                        'value' => ($model->pct_ue_native*100)."%",
+                    ],
+                    [
+                        'attribute' => 'pct_ue_asian',
+                        'value' => ($model->pct_ue_asian*100)."%",
+                    ],
+                    [
+                        'attribute' => 'pct_ue_black',
+                        'value' => ($model->pct_ue_black*100)."%",
+                    ],
+                    [
+                        'attribute' => 'pct_ue_latino',
+                        'value' => ($model->pct_ue_latino*100)."%",
+                    ],
+                    [
+                        'attribute' => 'pct_ue_white',
+                        'value' => ($model->pct_ue_white*100)."%",
+                    ],
+                    [
+                        'attribute' => 'pct_ue_two',
+                        'value' => ($model->pct_ue_two*100)."%",
+                    ],
+                    [
+                        'attribute' => 'pct_ue_unk',
+                        'value' => ($model->pct_ue_unk*100)."%",
+                    ],
+                    [
+                        'attribute' => 'pct_fullfirst_any_finaid',
+                        'value' => ($model->pct_fullfirst_any_finaid*100)."%",
+                    ],
                     'avg_fullfirst_loan',
-                    'pct_fullfirst_loan',
+                    [
+                        'attribute' => 'pct_fullfirst_loan',
+                        'value' => ($model->pct_fullfirst_loan*100)."%",
+                    ],
                     'avg_fullfirst_oloan',
                     'appl_ttl',
                     'appl_men',
@@ -100,6 +153,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     'act_wr_75',
                     'tuition_in',
                     'tuition_out',
+                    'med_sat_cr',
+                    'med_sat_math',
+                    'med_sat_wr',
+                    'avg_sat',
+                    'med_act_cum',
+                    'med_act_eng',
+                    'med_act_math',
+                    'med_act_wr',
+                    'pct_fed_loan',
+                    'med_debt_grad',
+                    'med_loan_monthly_payment',
+                    'pct_loan_principal_paid',
+                    'med_earn_grad_fed_aid',
+                    'pct_std_over25k',
                 ],
             ]) ?>
         </div>

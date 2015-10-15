@@ -98,6 +98,7 @@ class TrackController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->date_update=date('Y-m-d');
         if($model->user_id!=Yii::$app->user->id && !User::isAdmin()) return false;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['/'.$model->model_type.'/view', 'id' => $model->model_id]);
