@@ -1,0 +1,74 @@
+2015-07-07 18:21:41 [109.201.174.93][-][-][warning][yii\debug\Module::checkAccess] Access to debugger is denied due to IP address restriction. The requesting IP address is 109.201.174.93
+    in /home/kabar/www/kabarlar.ml/basic/views/layouts/main.php:66
+    in /home/kabar/www/kabarlar.ml/basic/controllers/SiteController.php:52
+2015-07-07 18:21:41 [109.201.174.93][-][-][info][application] $_SERVER = [
+    'USER' => 'nginx'
+    'HOME' => '/var/cache/nginx'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/home/kabar/www/kabarlar.ml/basic/web/index.php'
+    'DOCUMENT_ROOT' => '/home/kabar/www/kabarlar.ml'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/basic/web/index.php'
+    'REQUEST_URI' => '/basic/web/'
+    'DOCUMENT_URI' => '/basic/web/index.php'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '109.201.174.93'
+    'REMOTE_PORT' => '11465'
+    'SERVER_ADDR' => '128.199.39.20'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'kabarlar.ml'
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'kabarlar.ml'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,ru;q=0.6'
+    'PHP_SELF' => '/basic/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1436271701.405
+    'REQUEST_TIME' => 1436271701
+]
+2015-07-08 17:22:11 [-][-][-][error][yii\base\ErrorException:1] exception 'yii\base\ErrorException' with message 'Class 'app\commands\Yii' not found' in /home/kabar/www/kabarlar.ml/basic/commands/HelloController.php:30
+Stack trace:
+#0 [internal function]: yii\base\ErrorHandler->handleFatalError()
+#1 {main}
+2015-07-08 17:22:11 [-][-][-][info][application] $_SERVER = [
+    'XDG_SESSION_ID' => '461'
+    'HOSTNAME' => 'temirdroplet'
+    'TERM' => 'xterm'
+    'SHELL' => '/bin/bash'
+    'HISTSIZE' => '1000'
+    'SSH_CLIENT' => '109.201.174.93 8439 22'
+    'SSH_TTY' => '/dev/pts/0'
+    'USER' => 'root'
+    'LS_COLORS' => 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:'
+    'MAIL' => '/var/spool/mail/root'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin'
+    'PWD' => '/root'
+    'LANG' => 'en_US.UTF-8'
+    'HISTCONTROL' => 'ignoredups'
+    'SHLVL' => '1'
+    'HOME' => '/root'
+    'LOGNAME' => 'root'
+    'SSH_CONNECTION' => '109.201.174.93 8439 128.199.39.20 22'
+    'LESSOPEN' => '||/usr/bin/lesspipe.sh %s'
+    'XDG_RUNTIME_DIR' => '/run/user/0'
+    '_' => '/usr/bin/php'
+    'PHP_SELF' => '/home/kabar/www/kabarlar.ml/basic/yii'
+    'SCRIPT_NAME' => '/home/kabar/www/kabarlar.ml/basic/yii'
+    'SCRIPT_FILENAME' => '/home/kabar/www/kabarlar.ml/basic/yii'
+    'PATH_TRANSLATED' => '/home/kabar/www/kabarlar.ml/basic/yii'
+    'DOCUMENT_ROOT' => ''
+    'REQUEST_TIME_FLOAT' => 1436354531.4037
+    'REQUEST_TIME' => 1436354531
+    'argv' => [
+        0 => '/home/kabar/www/kabarlar.ml/basic/yii'
+        1 => 'hello'
+    ]
+    'argc' => 2
+]

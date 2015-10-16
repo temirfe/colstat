@@ -247,7 +247,7 @@ AppAsset::register($this);
         <div class="js_compare_cancel compare_cancel">cancel</div>
     </div>
     <div class="hidden js_controller_name"><?=$controller;?></div>
-    <?php $this->registerCssFile('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css');?>
+    <?php //$this->registerCssFile('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css');?>
     <?php $this->registerCssFile('/css/social-buttons.css');?>
     <?php $this->registerJsFile('/js/social-buttons.js');?>
     <script type="text/javascript">

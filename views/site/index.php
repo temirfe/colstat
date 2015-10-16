@@ -57,11 +57,28 @@ $sliderModels = $db->cache(function ($db) {
     <div class="col-md-4 trio">
         <div class="box grey">
             <h3>Undergraduate Schools</h3>
-            <ul class="list1">
-                <li><a href="/undergraduate//index?sort=name">Schools A/Z</a></li>
-                <li><a href="/undergraduate/index?sort=state">By State</a></li>
-                <li><a href="/undergraduate/index?sort=-ft_ugrad_enr">By Class Size</a></li>
-            </ul>
+            <div class="row">
+                <?= Html::beginForm(['/undergraduate'], 'get') ?>
+                <div class="form-group col-md-8">
+                    <!--type, input name, input value, options-->
+                    <?= Html::input('text', 'UndergraduateSearch[name]', '', ['class' => 'form-control','placeholder'=>'Search by Name']) ?>
+                </div>
+                <div class="form-group col-md-2">
+                    <?= Html::button('Search', ['class' => 'btn btn-primary', 'type'=>'submit']) ?>
+                </div>
+                <?= Html::endForm() ?>
+            </div>
+            <div class="row">
+                <?= Html::beginForm(['/undergraduate'], 'get') ?>
+                <div class="form-group col-md-8">
+                    <!--type, input name, input value, options-->
+                    <?= Html::input('text', 'UndergraduateSearch[state]', '', ['class' => 'form-control','placeholder'=>'Search by State']) ?>
+                </div>
+                <div class="form-group col-md-2">
+                    <?= Html::button('Search', ['class' => 'btn btn-primary', 'type'=>'submit']) ?>
+                </div>
+                <?= Html::endForm() ?>
+            </div>
         </div>
         <div class="box grey">
             <h3>Graduate School </h3>

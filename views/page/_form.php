@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use vova07\imperavi\Widget;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Page */
@@ -18,12 +19,19 @@ use vova07\imperavi\Widget;
     <?= $form->field($model, 'content')->widget(Widget::className(), [
         'settings' => [
             'minHeight' => 200,
+            'imageUpload' => Url::to(['/page/image-upload']),
+            'imageManagerJson' => Url::to(['/page/images-get']),
+            'fileUpload' => Url::to(['/page/file-upload']),
+            'fileManagerJson' => Url::to(['/page/files-get']),
             'plugins' => [
+                'imagemanager',
+                'filemanager',
                 'fontcolor',
                 'table',
                 'fontsize',
                 //'clips',
                 'fullscreen',
+                'video'
             ],
         ]
     ]); ?>
