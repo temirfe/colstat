@@ -62,11 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'ft_grad_empl_3month',
                         'value' => ($model->ft_grad_empl_3month*100)."%",
                     ],
-                    [
-                        'attribute' => 'avg_start_sal',
-                        'format' => 'raw',
-                        'value' => "$".number_format($model->avg_start_sal,0,'',','),
-                    ],
+                    'attribute' => 'avg_start_sal',
                     'avg_ugrad_gpa',
 
                 ],

@@ -44,12 +44,12 @@ class UndergradProfile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'int_applicant'], 'integer'],
+            [['user_id', 'int_applicant','entering_class', 'class_rank', 'class_size', 'years_taken'], 'integer'],
             [['ap_courses_taken', 'extracur', 'leadership_roles', 'honors', 'additional_info'], 'string'],
             [['gender'], 'string', 'max' => 10],
-            [['ethnicity', 'class_rank', 'class_size', 'ib_student', 'foreign_languages_taken', 'years_taken'], 'string', 'max' => 50],
-            [['entering_class', 'prospective_major', 'high_school'], 'string', 'max' => 255],
-            [['gpa_unweighted', 'gpa_weighted'], 'string', 'max' => 20]
+            [['ethnicity', 'ib_student', 'foreign_languages_taken'], 'string', 'max' => 50],
+            [['prospective_major', 'high_school'], 'string', 'max' => 255],
+            [['gpa_unweighted', 'gpa_weighted'], 'boolean']
         ];
     }
 

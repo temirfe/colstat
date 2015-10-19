@@ -94,7 +94,7 @@ use kartik\date\DatePicker;
 ])->textInput(['maxlength' => true]) ?>
 
     <?php
-    $status_items=['Sent'=>'Sent','File Completed'=>'File Completed','Undergoing Review'=>'Undergoing Review',
+    $status_items=['Sent'=>'Sent','File Complete'=>'File Completed','Undergoing Review'=>'Undergoing Review',
         'Accepted'=>'Accepted','Rejected'=>'Rejected','Waitlisted'=>'Waitlisted'];
     echo $form->field($model, 'status')->dropDownList($status_items,['prompt'=>'Select..']); ?>
 

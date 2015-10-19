@@ -48,7 +48,7 @@ class Contact extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'email' => 'Email',
-            'text' => 'Text',
+            'text' => 'Message',
             'date' => 'Date',
             'verifyCode' => 'Verification Code',
         ];
