@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\NavBar;
 use app\components\widgets\Alert;
 use yii\widgets\Breadcrumbs;
@@ -153,22 +154,23 @@ AppAsset::register($this);
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="social-sharing" data-permalink="http://labs.carsonshold.com/social-sharing-buttons">
-                        <a class="share-facebook" href="http://www.facebook.com/sharer.php?u=http://labs.carsonshold.com/social-sharing-buttons" target="_blank">
+                    <?php $url=Url::current([],true); ?>
+                    <div class="social-sharing" data-permalink="<?=$url?>">
+                        <a class="share-facebook" href="http://www.facebook.com/sharer.php?u=<?=$url?>" target="_blank">
                             <span class="icon icon-facebook" aria-hidden="true"></span>
                             <span class="share-title">Share</span>
                             <span class="share-count is-loaded">0</span>
                         </a>
-                        <a target="_blank" href="http://twitter.com/share?url=http://labs.carsonshold.com/social-sharing-buttons" class="share-twitter">
+                        <a target="_blank" href="http://twitter.com/share?url=<?=$url?>" class="share-twitter">
                             <span class="icon icon-twitter"></span>
                             <span class="share-title">Tweet</span>
                             <span class="share-count">0</span>
                         </a>
-                        <a class="share-pinterest" href="http://pinterest.com/pin/create/button/?url=http://labs.carsonshold.com/social-sharing-buttons&media=http://labs.carsonshold.com/social-sharing-buttons/demo.png&description=jQuery%20social%20media%20buttons%20with%20share%20counts%20on%20GitHub" target="_blank">
+                        <a class="share-pinterest" href="http://pinterest.com/pin/create/button/?url=<?=$url?>&media=http://collegestatistics.org/images/logo.jpg&description=Admissions%20facts,%20statistics,%20support,%20and%20real%20guidance" target="_blank">
                             <span class="icon icon-pinterest" aria-hidden="true"></span>
                             <span class="share-title">Pin it</span>
                         </a>
-                        <a class="share-google" href="http://plus.google.com/share?url=http://labs.carsonshold.com/social-sharing-buttons" target="_blank">
+                        <a class="share-google" href="http://plus.google.com/share?url=<?=$url?>" target="_blank">
                             <span class="icon icon-google" aria-hidden="true"></span>
                             <span class="share-count is-loaded">0</span>
                         </a>
