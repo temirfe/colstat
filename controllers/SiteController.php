@@ -258,18 +258,18 @@ class SiteController extends Controller
                 /* --BEGIN can be a stand alone function in actionSyncuni --*/
                 if(isset($insRow['state']))
                 {
-                    $params = [':name' => $insRow['name'], ':state' => $insRow['state']];
+                    $params = [':name' => $insRow['name'],':state' => $insRow['state']];
                     $targetrow=$db->createCommand("SELECT id FROM {$table} WHERE name=:name AND state=:state", $params)->queryOne();
                     if($targetrow) //update fields except name
                     {
                         unset($insRow['name']);
                         $upd=array_filter($insRow);//filters out arrays that has empty value
-                        //$db->createCommand()->update($table, $upd, "id='{$targetrow['id']}'")->execute();
+                        $db->createCommand()->update($table, $upd, "id='{$targetrow['id']}'")->execute();
                     }
                     else //insert
                     {
                         $ins=array_filter($insRow);
-                        //$db->createCommand()->insert($table,$ins)->execute();
+                        $db->createCommand()->insert($table,$ins)->execute();
                     }
                 }
 
