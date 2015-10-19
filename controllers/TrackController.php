@@ -77,6 +77,7 @@ class TrackController extends Controller
     public function actionCreate()
     {
         $model = new Track();
+        $model->date_update=date('Y-m-d');
 
         $model->user_id=Yii::$app->user->id;
 

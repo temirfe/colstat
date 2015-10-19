@@ -42,12 +42,13 @@ class Gprofile extends \yii\db\ActiveRecord
     {
         return [
             //[['user_id', 'gender', 'ethnicity', 'appl_cycle_year', 'undergrad_inst', 'major', 'degree_awarded', 'gpa', 'class_rank', 'work_exp', 'study_abroad_exp', 'int_applicant'], 'required'],
-            [['user_id', 'int_applicant'], 'integer'],
+            [['user_id', 'int_applicant', 'class_rank', 'appl_cycle_year'], 'integer'],
             [['extracur', 'leadership_roles', 'honors', 'additional_info'], 'string'],
             [['gender'], 'string', 'max' => 10],
-            [['ethnicity', 'appl_cycle_year', 'major', 'class_rank', 'work_exp'], 'string', 'max' => 50],
+            [['ethnicity', 'major', 'work_exp'], 'string', 'max' => 50],
             [['undergrad_inst', 'study_abroad_exp'], 'string', 'max' => 255],
-            [['degree_awarded', 'gpa'], 'string', 'max' => 20]
+            [['degree_awarded'], 'string', 'max' => 20],
+            [['gpa'], 'boolean']
         ];
     }
 

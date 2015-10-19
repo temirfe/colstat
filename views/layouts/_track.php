@@ -5,6 +5,7 @@ use yii\grid\GridView;
 $controller=Yii::$app->controller->id;
 if($controller=='business' || $controller=='engineering') $visible=true; else $visible=false;
 if($controller=='nursing') $dvisible=true; else $dvisible=false;
+if(Yii::$app->user->identity->isAdmin()) $avisible=true; else $avisible=false;
 echo GridView::widget([
     'dataProvider' => $dataProvider,
     'summary'=>'',
@@ -68,10 +69,7 @@ echo GridView::widget([
         [
             'class' => 'yii\grid\ActionColumn',
             'headerOptions' => ['width' => '67'],
-            'visible'=> function($model) {
-                if($model->user_id==Yii::$app->user->id) $avisible=true; else $avisible=false;
-                return $avisible;
-            },
+            'visible'=> $avisible,
             'urlCreator' => function ($action, $model, $key, $index) {
                 $table=$model->model_type; if($model->model_type=='undergraduate') $table='university';
                 $name=Yii::$app->db->createCommand("SELECT name FROM {$table} WHERE id='{$model->model_id}'")->queryScalar();

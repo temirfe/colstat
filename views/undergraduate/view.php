@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-3">
             <span class='gicon glyphicon glyphicon-phone-alt'></span><?=$model->phone;?><br />
             <span class='gicon glyphicon glyphicon-globe'></span>
-            <?php if(strpos('http',$model->url)) $url=$model->url; else $url='https://'.$model->url; echo Html::a($model->url,$url);?><br />
+            <?php if(strpos($model->url,'http')) $url=$model->url; else $url='https://'.$model->url; echo Html::a($model->url,$url);?><br />
         </div>
         <div class="col-md-3">
             <?php if($model->fax) echo '<span class="gicon">fax:</span>'.$model->fax.'<br />';?>

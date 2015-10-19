@@ -26,7 +26,7 @@ class SignupForm extends Model
     {
         return [
             ['username', 'filter', 'filter' => 'trim'],
-            [['username','name','city','state'], 'required'],
+            [['username','city','state'], 'required'],
             ['username', 'match', 'pattern' => '#^[\w_-]+$#i'],
             ['username', 'unique', 'targetClass' => User::className(), 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
@@ -55,7 +55,6 @@ class SignupForm extends Model
             $user = new User();
             $user->username = $this->username;
             $user->email = $this->email;
-            $user->name = $this->name;
             $user->state = $this->state;
             $user->city = $this->city;
             $user->hear = $this->hear;

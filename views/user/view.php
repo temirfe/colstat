@@ -12,6 +12,7 @@ if(!isset($yiiuser)) $yiiuser=Yii::$app->user;
 $this->title = $model->username;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+if(Yii::$app->request->get('id')==Yii::$app->user->id) $avisible=true; else $avisible=false;
 ?>
 <div class="user-view">
     <?php if(!$yiiuser->isGuest && ($yiiuser->identity->isAdmin() || $model->id==$yiiuser->id)){
@@ -98,10 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['width' => '67'],
-                        'visible'=> function($model) {
-                            if($model->user_id==Yii::$app->user->id) $avisible=true; else $avisible=false;
-                            return $avisible;
-                        },
+                        'visible'=>$avisible,
                         'urlCreator' => function ($action, $model, $key, $index) {
                             $table=$model->model_type; if($model->model_type=='undergraduate') $table='university';
                             $name=Yii::$app->db->createCommand("SELECT name FROM {$table} WHERE id='{$model->model_id}'")->queryScalar();

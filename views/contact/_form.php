@@ -11,7 +11,7 @@ use yii\captcha\Captcha;
 <br />
 <br />
 <div class="alert alert-info">
-    If you have any questions/comments please use the form below.
+    Do you have any comments or questions? We’d love to hear from you!Use the form below to send us a message.
 </div>
 <div class="contact-form">
 
